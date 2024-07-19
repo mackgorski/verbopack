@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@nextui-org/theme/dist/core.css';
+@import '@nextui-org/theme/dist/light.css';
+@import '@nextui-org/theme/dist/dark.css';
+
+/* Add any custom styles here */
+/* Add any other global styles here */

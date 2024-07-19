@@ -1,19 +1,50 @@
 {
   "name": "vercel-foundation",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0 --ignore-pattern 'packages/ui/dist/**'",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "@nextui-org/react": "^2",
+    "tailwindcss": "^3"
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
+    "@eslint/js": "^9",
+    "@next/eslint-plugin-next": "^14.2.5",
+    "@tailwindcss/typography": "^0.5.13",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "autoprefixer": "^10",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^13.4.9",
+    "eslint-config-prettier": "^8",
+    "eslint-config-turbo": "^2",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-prettier": "^5",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^9",
+    "lint-staged": "^15",
+    "postcss": "^8",
+    "prettier": "^3",
+    "tailwindcss": "^3",
+    "tsconfig": "^7",
+    "tsup": "^8",
     "turbo": "^2.0.6",
-    "typescript": "^5.4.5"
+    "typescript": "5.3.3"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }
