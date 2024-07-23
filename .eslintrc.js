@@ -25,11 +25,15 @@ module.exports = {
     settings: {
         react: {
             version: 'detect'
+        },
+        next: {
+            rootDir: ['apps/*/'] // Update this to match your project structure
         }
     },
     rules: {
         'react/react-in-jsx-scope': 'off',
-        '@typescript-eslint/no-var-requires': 'off'
+        '@typescript-eslint/no-var-requires': 'off',
+        '@next/next/no-html-link-for-pages': 'off' // Disable this rule if you're using app directory
     },
     overrides: [
         {
