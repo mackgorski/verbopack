@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "preserve",
+    "jsxImportSource": "react",
     "plugins": [
       {
         "name": "next"
@@ -13,13 +14,15 @@
       ]
     },
     "module": "ESNext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "*.ts"
+    "*.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

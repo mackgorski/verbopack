@@ -1,4 +1,4 @@
-// const { nextui } = require("@nextui-org/theme");
+const { nextui } = require("@nextui-org/theme");
 
 // /** @type {import('tailwindcss').Config} */
 // module.exports = {
@@ -24,5 +24,6 @@ module.exports = {
     theme: {
         extend: {},
     },
-    plugins: [],
+    darkMode: "class",
+    plugins: [nextui()],
 };
