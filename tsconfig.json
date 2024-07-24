@@ -17,11 +17,20 @@
         "noEmit": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "incremental": true
+        "incremental": true,
+        "useDefineForClassFields": true,
+        "allowImportingTsExtensions": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "types": [
+            "vitest/globals"
+        ]
     },
     "include": [
         "**/*.ts",
-        "**/*.tsx"
+        "**/*.tsx",
+        "src"
     ],
     "exclude": [
         "node_modules"
