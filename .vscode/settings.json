@@ -6,5 +6,7 @@
     {
       "eslint.experimental.useFlatConfig": true
     }
-  ]
+  ],
+  "CodeGPT.Autocomplete.enabled": true,
+  "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
