@@ -7,6 +7,12 @@
       "eslint.experimental.useFlatConfig": true
     }
   ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "CodeGPT.Autocomplete.enabled": true,
   "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
