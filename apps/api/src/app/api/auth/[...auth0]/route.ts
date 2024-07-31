@@ -36,37 +36,107 @@
 
 // export const POST = handleAuth();
 
+// NOTE: THIS WORKED!!!!!
+// import { handleAuth, handleLogin, handleCallback } from '@repo/auth';
+// import { NextRequest } from 'next/server';
+// import prisma from '../../../../lib/prisma';
 
-import { handleAuth, handleCallback, handleLogin, AfterCallback, Session } from '@auth0/nextjs-auth0';
+// export const GET = handleAuth({
+//     login: handleLogin({
+//         returnTo: '/profile'
+//     }),
+//     callback: handleCallback({
+//         async afterCallback(req: NextRequest, session) {
+//             if (session?.user) {
+//                 const { sub, name, email, picture } = session.user;
+//                 await prisma.user.upsert({
+//                     where: { auth0Id: sub },
+//                     update: { name, email, image: picture },
+//                     create: { auth0Id: sub, name, email, image: picture },
+//                 });
+//             }
+//             if (session === null) {
+//                 return undefined;
+//             }
+//             return session;
+//         }
+//     })
+// });
+
+// export const POST = handleAuth();
+
+
+// NOTES: THIS WORKS!!!!
+
+
+import { handleAuth, handleLogin, handleCallback } from '@repo/auth';
 import { NextRequest } from 'next/server';
+import { Session } from '@auth0/nextjs-auth0';
 import prisma from '../../../../lib/prisma';
-
-const afterCallback: AfterCallback = async (req: NextRequest, session: Session | null) => {
-    if (session?.user) {
-        const { sub, name, email, picture } = session.user;
-        await prisma.user.upsert({
-            where: { auth0Id: sub },
-            update: { name, email, image: picture },
-            create: { auth0Id: sub, name, email, image: picture },
-        });
-    }
-    if (session === null) {
-        return undefined;
-    }
-    return session;
-};
 
 export const GET = handleAuth({
     login: handleLogin({
-        authorizationParams: {
-            scope: 'openid profile email',
-        },
-        returnTo: '/profile',
+        returnTo: '/profile'
     }),
     callback: handleCallback({
-        afterCallback,
-        redirectUri: `${process.env.AUTH0_BASE_URL}/api/auth/callback`,
-    }),
+        async afterCallback(_req: NextRequest, session: Session | null) {
+            if (session?.user) {
+                const { sub, name, email, picture } = session.user;
+                await prisma.user.upsert({
+                    where: { auth0Id: sub },
+                    update: { name, email, image: picture },
+                    create: { auth0Id: sub, name, email, image: picture },
+                });
+            }
+            if (session === null) {
+                return undefined;
+            }
+            return session;
+        }
+    })
 });
 
 export const POST = handleAuth();
+
+
+
+// import { handleAuth, handleLogin, handleCallback, AfterCallback, Session } from '@auth0/nextjs-auth0';
+// import { NextApiRequest, NextApiResponse } from 'next';
+// import prisma from '../../../../lib/prisma';
+
+// const afterCallback: AfterCallback = async (_req: NextApiRequest, _res: NextApiResponse, session: Session | null) => {
+//     if (session?.user) {
+//         const { sub, name, email, picture, email_verified } = session.user;
+//         await prisma.user.upsert({
+//             where: { auth0Id: sub },
+//             update: {
+//                 name,
+//                 email,
+//                 image: picture,
+//                 emailVerified: email_verified ? new Date() : null
+//             },
+//             create: {
+//                 auth0Id: sub,
+//                 name,
+//                 email,
+//                 image: picture,
+//                 emailVerified: email_verified ? new Date() : null
+//             },
+//         });
+//     }
+//     if (session === null) {
+//         return undefined;
+//     }
+//     return session;
+// };
+
+// export const GET = handleAuth({
+//     login: handleLogin({
+//         returnTo: '/profile'
+//     }),
+//     callback: handleCallback({
+//         afterCallback,
+//     })
+// });
+
+// export const POST = handleAuth();

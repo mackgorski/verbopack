@@ -7,5 +7,8 @@ export const auth0 = initAuth0({
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     secret: process.env.AUTH0_SECRET,
     clockTolerance: 60,
-    httpTimeout: 10000, // Increase timeout to 10 seconds
+    httpTimeout: 5000,
+    authorizationParams: {
+        scope: 'openid profile email',
+    },
 });

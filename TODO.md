@@ -52,3 +52,6 @@
 - [ ] Configure your project for Vercel deployment.
 - [ ] Set up environment variables in Vercel.
 - [ ] Implement preview deployments for pull requests.
+
+## Tasks
+- [] Chekc if tolls like `tsc` are needed and can thos ebe replaced with regular next tools.
