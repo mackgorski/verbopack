@@ -74,7 +74,7 @@ import prisma from '../../../../lib/prisma';
 import { AfterCallback, Session } from '@auth0/nextjs-auth0';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const afterCallback: AfterCallback = async (_req: NextApiRequest, _res: NextApiResponse, session: Session | null) => {
+const afterCallback: AfterCallback = async (_req: NextApiRequest, _res: NextApiResponse, session: Session | null | undefined) => {
     if (session?.user) {
         const { sub, name, email, picture } = session.user;
         try {
@@ -89,7 +89,7 @@ const afterCallback: AfterCallback = async (_req: NextApiRequest, _res: NextApiR
             console.error(JSON.stringify(error, null, 2));
         }
     }
-    return session;
+    return session || undefined;
 };
 
 export const GET = handleAuth({
