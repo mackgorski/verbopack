@@ -77,7 +77,7 @@ export const GET = handleAuth({
         returnTo: '/profile'
     }),
     callback: handleCallback({
-        afterCallback: async (session) => {
+        afterCallback: async (session: any) => {
             if (session?.user) {
                 const { sub, name, email, picture } = session.user;
                 try {
