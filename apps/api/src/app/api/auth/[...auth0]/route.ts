@@ -88,9 +88,6 @@ export const GET = handleAuth({
                     create: { auth0Id: sub, name, email, image: picture },
                 });
             }
-            if (session === null) {
-                return undefined;
-            }
             return session;
         }
     })

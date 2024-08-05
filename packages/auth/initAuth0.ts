@@ -1,6 +1,8 @@
 import { initAuth0 } from '@auth0/nextjs-auth0';
 
-export default function initializeAuth0() {
+import { InitAuth0 } from '@auth0/nextjs-auth0';
+
+export const initializeAuth0: InitAuth0 = () => {
     return initAuth0({
         secret: process.env.AUTH0_SECRET,
         issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
@@ -8,4 +10,6 @@ export default function initializeAuth0() {
         clientID: process.env.AUTH0_CLIENT_ID,
         clientSecret: process.env.AUTH0_CLIENT_SECRET,
     });
-}
+};
+
+export default initializeAuth0;
