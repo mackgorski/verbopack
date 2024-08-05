@@ -89,11 +89,11 @@
 
 
 
-// 'use client';
+'use client';
 
-// import { useUser } from '@repo/auth';
-// import { useEffect, useState } from 'react';
-// import Image from "next/image";
+import { useUser } from '@repo/auth';
+import { useEffect, useState } from 'react';
+import Image from "next/image";
 
 // interface UserProfile {
 //     name?: string;
@@ -147,7 +147,7 @@ interface UserProfile {
     name?: string;
     email?: string;
     image?: string;
-    emailVerified?: Date;
+    emailVerified?: Date | null;
 }
 
 export default function Profile() {
@@ -173,8 +173,8 @@ export default function Profile() {
             <h1>Profile</h1>
             {profile ? (
                 <>
-                    <p>Name: {profile.name}</p>
-                    <p>Email: {profile.email}</p>
+                    <p>Name: {profile.name || 'N/A'}</p>
+                    <p>Email: {profile.email || 'N/A'}</p>
                     <p>Email Verified: {profile.emailVerified ? 'Yes' : 'No'}</p>
                     {profile.image && <Image src={profile.image} alt={profile.name || 'User'} width={100} height={100} />}
                 </>
