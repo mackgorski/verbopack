@@ -88,9 +88,13 @@ export const GET = handleAuth({
                         update: { name, email, image: picture },
                         create: { auth0Id: sub, name, email, image: picture },
                     });
+                    console.log('User updated/created successfully');
                 } catch (error) {
-                    console.error('Error updating user:', error);
-                    // You might want to handle this error more gracefully
+                    console.error('Error updating/creating user:', error);
+                    // Log the full error object for debugging
+                    console.error(JSON.stringify(error, null, 2));
+                    // You might want to add custom error handling here
+                    // For now, we'll just return the session without modification
                 }
             }
             return session;
