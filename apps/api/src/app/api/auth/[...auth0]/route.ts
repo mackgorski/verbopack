@@ -79,7 +79,7 @@ export const GET = handleAuth({
         returnTo: '/profile'
     }),
     callback: handleCallback({
-        async afterCallback(_req: NextRequest, session: Session | null) {
+        afterCallback: async (req, res, session) => {
             if (session?.user) {
                 const { sub, name, email, picture } = session.user;
                 try {
@@ -91,10 +91,7 @@ export const GET = handleAuth({
                     console.log('User updated/created successfully');
                 } catch (error) {
                     console.error('Error updating/creating user:', error);
-                    // Log the full error object for debugging
                     console.error(JSON.stringify(error, null, 2));
-                    // You might want to add custom error handling here
-                    // For now, we'll just return the session without modification
                 }
             }
             return session;
