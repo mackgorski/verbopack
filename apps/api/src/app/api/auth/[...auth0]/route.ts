@@ -75,19 +75,22 @@ import { AfterCallback, Session } from '@auth0/nextjs-auth0';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const afterCallback: AfterCallback = async (_req: NextApiRequest, _res: NextApiResponse, session: Session | null | undefined) => {
+    console.log('AfterCallback Session:', JSON.stringify(session, null, 2));
     if (session?.user) {
         const { sub, name, email, picture } = session.user;
         try {
-            await prisma.user.upsert({
+            const user = await prisma.user.upsert({
                 where: { auth0Id: sub },
                 update: { name, email, image: picture },
                 create: { auth0Id: sub, name, email, image: picture },
             });
-            console.log('User updated/created successfully');
+            console.log('User updated/created successfully:', user);
         } catch (error) {
             console.error('Error updating/creating user:', error);
             console.error(JSON.stringify(error, null, 2));
         }
+    } else {
+        console.error('No user in session after login');
     }
     return session || undefined;
 };

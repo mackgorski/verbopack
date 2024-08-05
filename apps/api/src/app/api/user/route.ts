@@ -112,15 +112,25 @@ import prisma from '../../../lib/prisma';
 export const GET = withApiAuthRequired(async function route(req) {
     try {
         const session = await getSession(req);
+        console.log('Session:', JSON.stringify(session, null, 2));
+
         if (!session || !session.user) {
             return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
         }
 
+        const auth0Id = session.user.sub;
+        console.log('Auth0 ID:', auth0Id);
+
+        if (!auth0Id) {
+            return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
+        }
+
         const user = await prisma.user.findUnique({
-            where: { auth0Id: session.user.sub },
+            where: { auth0Id },
         });
 
         if (!user) {
+            console.log('User not found in database for auth0Id:', auth0Id);
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
