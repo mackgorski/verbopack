@@ -72,14 +72,16 @@
 import { handleAuth, handleLogin, handleCallback } from '@repo/auth';
 import prisma from '../../../../lib/prisma';
 
+import { Session } from '@auth0/nextjs-auth0';
+
 export const GET = handleAuth({
     login: handleLogin({
         returnTo: '/profile'
     }),
     callback: handleCallback({
-        afterCallback: async (session) => {
+        afterCallback: async (session: Session | null) => {
             if (session?.user) {
-                const { sub, name, email, picture } = session.user as { sub: string; name?: string; email?: string; picture?: string };
+                const { sub, name, email, picture } = session.user;
                 try {
                     await prisma.user.upsert({
                         where: { auth0Id: sub },
