@@ -76,7 +76,7 @@ model User {
     updatedAt     DateTime  @updatedAt @default(now())
 
     @@allow('create,read', true)
-    @@allow('update,delete', auth() == this)
+    @@allow('update,delete', auth() != null)
 }
 
 // We don't need to define Session and Account models for Auth0

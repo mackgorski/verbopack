@@ -82,11 +82,16 @@ export const GET = handleAuth({
         async afterCallback(_req: NextRequest, session: Session | null) {
             if (session?.user) {
                 const { sub, name, email, picture } = session.user;
-                await prisma.user.upsert({
-                    where: { auth0Id: sub },
-                    update: { name, email, image: picture },
-                    create: { auth0Id: sub, name, email, image: picture },
-                });
+                try {
+                    await prisma.user.upsert({
+                        where: { auth0Id: sub },
+                        update: { name, email, image: picture },
+                        create: { auth0Id: sub, name, email, image: picture },
+                    });
+                } catch (error) {
+                    console.error('Error updating user:', error);
+                    // You might want to handle this error more gracefully
+                }
             }
             return session;
         }
