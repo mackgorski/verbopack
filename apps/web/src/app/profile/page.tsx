@@ -156,7 +156,9 @@ export default function Profile() {
 
     useEffect(() => {
         if (user) {
-            fetch('http://localhost:3001/api/user')
+            fetch('http://localhost:3001/api/user', {
+                credentials: 'include'
+            })
                 .then(res => res.json())
                 .then(data => setProfile(data))
                 .catch(err => console.error('Error fetching user profile:', err));
