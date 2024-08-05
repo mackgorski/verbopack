@@ -1,7 +1,7 @@
-'use client';
+// 'use client';
 
-import { useUser } from '@repo/auth';
-import { useEffect, useState } from 'react';
+// import { useUser } from '@repo/auth';
+// import { useEffect, useState } from 'react';
 // import Image from 'next/image';
 
 // interface UserProfile {
@@ -45,7 +45,7 @@ import { useEffect, useState } from 'react';
 
 // import { useUser } from '@auth0/nextjs-auth0/client';
 // import { useEffect, useState } from 'react';
-import Image from "next/image";
+// import Image from "next/image";
 
 // interface UserProfile {
 //     name?: string;
@@ -89,11 +89,11 @@ import Image from "next/image";
 
 
 
-'use client';
+// 'use client';
 
-import { useUser } from '@repo/auth';
-import { useEffect, useState } from 'react';
-import Image from "next/image";
+// import { useUser } from '@repo/auth';
+// import { useEffect, useState } from 'react';
+// import Image from "next/image";
 
 // interface UserProfile {
 //     name?: string;
