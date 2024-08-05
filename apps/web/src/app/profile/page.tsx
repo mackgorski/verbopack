@@ -1,7 +1,7 @@
-// 'use client';
+'use client';
 
-// import { useUser } from '@repo/auth';
-// import { useEffect, useState } from 'react';
+import { useUser } from '@repo/auth';
+import { useEffect, useState } from 'react';
 // import Image from 'next/image';
 
 // interface UserProfile {
@@ -179,14 +179,16 @@ export default function Profile() {
         }
     }, [user]);
 
-    if (isLoading) return <div>Loading...</div>;
-    if (!user) return <div>Please login to view this page</div>;
-    if (error) return <div>Error: {error}</div>;
-
     return (
         <div>
             <h1>Profile</h1>
-            {profile ? (
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : !user ? (
+                <p>Please login to view this page</p>
+            ) : error ? (
+                <p>Error: {error}</p>
+            ) : profile ? (
                 <>
                     <p>Name: {profile.name || 'N/A'}</p>
                     <p>Email: {profile.email || 'N/A'}</p>
