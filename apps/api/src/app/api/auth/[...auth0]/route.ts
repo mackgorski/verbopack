@@ -77,9 +77,9 @@ export const GET = handleAuth({
         returnTo: '/profile'
     }),
     callback: handleCallback({
-        afterCallback: async (session: any) => {
+        afterCallback: async (session) => {
             if (session?.user) {
-                const { sub, name, email, picture } = session.user;
+                const { sub, name, email, picture } = session.user as { sub: string; name?: string; email?: string; picture?: string };
                 try {
                     await prisma.user.upsert({
                         where: { auth0Id: sub },
