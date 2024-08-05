@@ -13,7 +13,7 @@ export default function UserStatus() {
         <div>
             {user ? (
                 <>
-                    <p>Hello, {user.name}!</p>
+                    <p>Hello, {user.name || 'User'}!</p>
                     <Link href="/api/auth/logout">Logout</Link>
                 </>
             ) : (
