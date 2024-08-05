@@ -79,11 +79,38 @@ const afterCallback: AfterCallback = async (_req: NextApiRequest, _res: NextApiR
     if (session?.user) {
         const { sub, name, email, picture } = session.user;
         try {
-            const user = await prisma.user.upsert({
+            let user = await prisma.user.findUnique({
                 where: { auth0Id: sub },
-                update: { name, email, image: picture },
-                create: { auth0Id: sub, name, email, image: picture },
             });
+
+            if (!user && email) {
+                // If user not found by auth0Id, try to find by email
+                user = await prisma.user.findUnique({
+                    where: { email },
+                });
+
+                if (user) {
+                    // If found by email, update the auth0Id
+                    user = await prisma.user.update({
+                        where: { id: user.id },
+                        data: { auth0Id: sub },
+                    });
+                }
+            }
+
+            if (!user) {
+                // If still not found, create a new user
+                user = await prisma.user.create({
+                    data: { auth0Id: sub, name, email, image: picture },
+                });
+            } else {
+                // Update existing user
+                user = await prisma.user.update({
+                    where: { id: user.id },
+                    data: { name, email, image: picture },
+                });
+            }
+
             console.log('User updated/created successfully:', user);
         } catch (error) {
             console.error('Error updating/creating user:', error);

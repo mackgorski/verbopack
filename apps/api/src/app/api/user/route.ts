@@ -121,7 +121,10 @@ export const GET = withApiAuthRequired(async function route(req) {
 
         console.log('Session user:', JSON.stringify(session.user, null, 2));
 
-        const auth0Id = session.user.sub;
+        let auth0Id = session.user.sub;
+        if (!auth0Id && session.user.id) {
+            auth0Id = session.user.id;
+        }
         console.log('Auth0 ID:', auth0Id);
 
         if (!auth0Id) {
@@ -129,16 +132,42 @@ export const GET = withApiAuthRequired(async function route(req) {
             return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
         }
 
-        const user = await prisma.user.findUnique({
+        let user = await prisma.user.findUnique({
             where: { auth0Id },
         });
 
         if (!user) {
             console.log('User not found in database for auth0Id:', auth0Id);
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            // Try to find user by email as a fallback
+            if (session.user.email) {
+                user = await prisma.user.findUnique({
+                    where: { email: session.user.email },
+                });
+                if (user) {
+                    // Update the auth0Id if found by email
+                    user = await prisma.user.update({
+                        where: { id: user.id },
+                        data: { auth0Id },
+                    });
+                    console.log('User found by email and updated:', JSON.stringify(user, null, 2));
+                }
+            }
+            if (!user) {
+                // If still not found, create a new user
+                user = await prisma.user.create({
+                    data: {
+                        auth0Id,
+                        name: session.user.name,
+                        email: session.user.email,
+                        image: session.user.picture,
+                    },
+                });
+                console.log('New user created:', JSON.stringify(user, null, 2));
+            }
+        } else {
+            console.log('User found:', JSON.stringify(user, null, 2));
         }
 
-        console.log('User found:', JSON.stringify(user, null, 2));
         return NextResponse.json(user);
     } catch (error) {
         console.error('Error in user route:', error);
