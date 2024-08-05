@@ -112,6 +112,12 @@ const afterCallback: AfterCallback = async (_req: NextApiRequest, _res: NextApiR
             }
 
             console.log('User updated/created successfully:', user);
+            
+            // Ensure the session contains the user information
+            session.user = {
+                ...session.user,
+                ...user,
+            };
         } catch (error) {
             console.error('Error updating/creating user:', error);
             console.error(JSON.stringify(error, null, 2));

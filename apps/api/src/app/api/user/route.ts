@@ -129,6 +129,15 @@ export const GET = withApiAuthRequired(async function route(req) {
 
         if (!auth0Id) {
             console.log('Auth0 ID is null/undefined');
+            // If auth0Id is not available, try to use email as a fallback
+            if (session.user.email) {
+                let user = await prisma.user.findUnique({
+                    where: { email: session.user.email },
+                });
+                if (user) {
+                    return NextResponse.json(user);
+                }
+            }
             return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
         }
 
