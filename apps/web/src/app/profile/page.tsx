@@ -153,20 +153,35 @@ interface UserProfile {
 export default function Profile() {
     const { user, isLoading } = useUser();
     const [profile, setProfile] = useState<UserProfile | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (user) {
             fetch('http://localhost:3001/api/user', {
                 credentials: 'include'
             })
-                .then(res => res.json())
-                .then(data => setProfile(data))
-                .catch(err => console.error('Error fetching user profile:', err));
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    setProfile(data);
+                })
+                .catch(err => {
+                    console.error('Error fetching user profile:', err);
+                    setError(err.message);
+                });
         }
     }, [user]);
 
     if (isLoading) return <div>Loading...</div>;
     if (!user) return <div>Please login to view this page</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div>

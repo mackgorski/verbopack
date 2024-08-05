@@ -138,7 +138,8 @@ export const GET = withApiAuthRequired(async function route(req) {
                     return NextResponse.json(user);
                 }
             }
-            return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
+            // If we still can't identify the user, return an error
+            return NextResponse.json({ error: 'Unable to identify user' }, { status: 400 });
         }
 
         let user = await prisma.user.findUnique({
