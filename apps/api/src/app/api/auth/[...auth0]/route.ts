@@ -71,32 +71,31 @@
 
 import { handleAuth, handleLogin, handleCallback } from '@repo/auth';
 import prisma from '../../../../lib/prisma';
+import { AfterCallback, Session } from '@auth0/nextjs-auth0';
 
-import { Session } from '@auth0/nextjs-auth0';
+const afterCallback: AfterCallback = async (req, res, session) => {
+    if (session?.user) {
+        const { sub, name, email, picture } = session.user;
+        try {
+            await prisma.user.upsert({
+                where: { auth0Id: sub },
+                update: { name, email, image: picture },
+                create: { auth0Id: sub, name, email, image: picture },
+            });
+            console.log('User updated/created successfully');
+        } catch (error) {
+            console.error('Error updating/creating user:', error);
+            console.error(JSON.stringify(error, null, 2));
+        }
+    }
+    return session;
+};
 
 export const GET = handleAuth({
     login: handleLogin({
         returnTo: '/profile'
     }),
-    callback: handleCallback({
-        afterCallback: async (session: Session | null) => {
-            if (session?.user) {
-                const { sub, name, email, picture } = session.user;
-                try {
-                    await prisma.user.upsert({
-                        where: { auth0Id: sub },
-                        update: { name, email, image: picture },
-                        create: { auth0Id: sub, name, email, image: picture },
-                    });
-                    console.log('User updated/created successfully');
-                } catch (error) {
-                    console.error('Error updating/creating user:', error);
-                    console.error(JSON.stringify(error, null, 2));
-                }
-            }
-            return session;
-        }
-    })
+    callback: handleCallback({ afterCallback })
 });
 
 export const POST = handleAuth();
