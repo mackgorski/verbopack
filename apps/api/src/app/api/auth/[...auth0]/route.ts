@@ -125,7 +125,7 @@ const afterCallback: AfterCallback = async (_req: NextApiRequest, _res: NextApiR
     } else {
         console.error('No user in session after login');
     }
-    return session || undefined;
+    return session;
 };
 
 export const GET = handleAuth({

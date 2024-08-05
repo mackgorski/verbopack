@@ -166,9 +166,9 @@ export const GET = withApiAuthRequired(async function route(req) {
                 user = await prisma.user.create({
                     data: {
                         auth0Id,
-                        name: session.user.name,
-                        email: session.user.email,
-                        image: session.user.picture,
+                        name: session.user.name || '',
+                        email: session.user.email || '',
+                        image: session.user.picture || null,
                     },
                 });
                 console.log('New user created:', JSON.stringify(user, null, 2));
