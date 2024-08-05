@@ -106,10 +106,10 @@
 
 
 import { NextResponse } from 'next/server';
-import { getSession } from '@auth0/nextjs-auth0';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import prisma from '../../../lib/prisma';
 
-export async function GET() {
+export const GET = withApiAuthRequired(async function route() {
     const session = await getSession();
     if (!session || !session.user) {
         return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
@@ -124,4 +124,4 @@ export async function GET() {
     }
 
     return NextResponse.json(user);
-}
+});
