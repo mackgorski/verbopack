@@ -70,8 +70,6 @@
 
 
 import { handleAuth, handleLogin, handleCallback } from '@repo/auth';
-import { NextRequest } from 'next/server';
-import { Session } from '@auth0/nextjs-auth0';
 import prisma from '../../../../lib/prisma';
 
 export const GET = handleAuth({
@@ -79,7 +77,7 @@ export const GET = handleAuth({
         returnTo: '/profile'
     }),
     callback: handleCallback({
-        afterCallback: async (req, res, session) => {
+        afterCallback: async (session) => {
             if (session?.user) {
                 const { sub, name, email, picture } = session.user;
                 try {

@@ -110,7 +110,7 @@ import { getSession } from '@auth0/nextjs-auth0';
 import prisma from '../../../lib/prisma';
 
 export async function GET(req: NextRequest) {
-    const session = await getSession(req, res);
+    const session = await getSession(req);
     if (!session || !session.user) {
         return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
