@@ -12,8 +12,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-/// @@allow('create,read', true)
-/// @@allow('update,delete', auth() == this)
+/// @@allow('create,read,update', true)
+/// @@allow('delete', auth() != null)
 model User {
   id            String    @id() @default(cuid())
   auth0Id       String    @unique()
@@ -22,5 +22,5 @@ model User {
   emailVerified DateTime?
   image         String?
   createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt()
+  updatedAt     DateTime  @updatedAt()
 }
