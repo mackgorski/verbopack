@@ -115,13 +115,17 @@ export const GET = withApiAuthRequired(async function route(req) {
         console.log('Session:', JSON.stringify(session, null, 2));
 
         if (!session || !session.user) {
+            console.log('Session or user is null/undefined');
             return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
         }
+
+        console.log('Session user:', JSON.stringify(session.user, null, 2));
 
         const auth0Id = session.user.sub;
         console.log('Auth0 ID:', auth0Id);
 
         if (!auth0Id) {
+            console.log('Auth0 ID is null/undefined');
             return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
         }
 
@@ -134,6 +138,7 @@ export const GET = withApiAuthRequired(async function route(req) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
+        console.log('User found:', JSON.stringify(user, null, 2));
         return NextResponse.json(user);
     } catch (error) {
         console.error('Error in user route:', error);
