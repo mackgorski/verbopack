@@ -1,58 +1,28 @@
-const {Grammar, Rule} = require('tree-sitter');
-
-function grammar(config) {
-  return new Grammar(config);
-}
-
-function rule(name) {
-  return new Rule(name);
-}
-
-function choice(...args) {
-  return {type: 'CHOICE', members: args};
-}
-
-function seq(...args) {
-  return {type: 'SEQ', members: args};
-}
-
-function repeat(rule) {
-  return {type: 'REPEAT', content: rule};
-}
-
-function optional(rule) {
-  return {type: 'CHOICE', members: [rule, {type: 'BLANK'}]};
-}
-
-function prec(precedence, rule) {
-  return {type: 'PREC', value: precedence, content: rule};
-}
-
 module.exports = grammar({
   name: 'typescript',
 
   rules: {
-    source_file: () => repeat(rule('_statement')),
+    source_file: $ => repeat($._statement),
 
-    _statement: () => choice(
-      rule('import_declaration'),
-      rule('export_statement'),
-      rule('function_declaration'),
-      rule('variable_declaration'),
-      rule('interface_declaration'),
-      rule('class_declaration'),
-      rule('type_alias_declaration'),
-      rule('enum_declaration'),
-      rule('expression_statement')
+    _statement: $ => choice(
+      $.import_declaration,
+      $.export_statement,
+      $.function_declaration,
+      $.variable_declaration,
+      $.interface_declaration,
+      $.class_declaration,
+      $.type_alias_declaration,
+      $.enum_declaration,
+      $.expression_statement
     ),
 
-    import_declaration: () => seq(
+    import_declaration: $ => seq(
       'import',
       choice(
-        seq(rule('import_clause'), 'from'),
-        rule('string')
+        seq($.import_clause, 'from'),
+        $.string
       ),
-      rule('string'),
+      $.string,
       ';'
     ),
 
@@ -255,8 +225,7 @@ module.exports = grammar({
   }
 });
 
-function commaSep(rule) {
-  return optional(seq(rule, repeat(seq(',', rule)), optional(',')));
-}
-
-module.exports.commaSep = commaSep;
+  commaSep(rule) {
+    return optional(seq(rule, repeat(seq(',', rule)), optional(',')));
+  }
+});
