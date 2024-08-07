@@ -233,8 +233,6 @@ module.exports = grammar({
     [$._expression, $.type]
   ],
 
-  word: $ => $.identifier,
-
   rules: {
     // ... (keep all the existing rules here)
 
