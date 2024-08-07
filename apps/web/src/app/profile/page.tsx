@@ -2,6 +2,7 @@
 
 import { useUser } from '@repo/auth';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Image from "next/image";
 
 interface UserProfile {
@@ -45,8 +46,8 @@ export default function Profile() {
                     {profile.image && (
                         <figure className="mt-4 relative">
                             <div className="w-[100px] h-[100px] rounded-full bg-gray-200 animate-pulse"></div>
-                            <Image 
-                                src={profile.image} 
+                            <Image
+                                src={profile.image || ''}
                                 alt={`Profile picture of ${profile.name || 'user'}`} 
                                 width={100} 
                                 height={100} 
