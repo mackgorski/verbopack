@@ -45,3 +45,6 @@ pnpm-lock.yaml
 *.dylib
 *.dll
 build/
+bindings/
+src/
+prebuilds/

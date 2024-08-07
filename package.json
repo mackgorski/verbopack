@@ -18,7 +18,8 @@
     "tree-sitter:generate": "tree-sitter generate --abi=latest typescript-grammar.js",
     "tree-sitter:parse": "tree-sitter parse \"**/*.{ts,tsx,js,jsx,json}\"",
     "install": "node-gyp-build",
-    "prebuildify": "prebuildify --napi --strip"
+    "prebuildify": "prebuildify --napi --strip",
+    "precommit": "npm run generate-repo-map"
   },
   "dependencies": {
     "@nextui-org/react": "^2",
@@ -91,7 +92,6 @@
   "types": "bindings/node",
   "files": [
     "grammar.js",
-    "binding.gyp",
     "prebuilds/**",
     "bindings/node/*",
     "queries/*",
