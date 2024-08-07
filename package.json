@@ -69,7 +69,8 @@
     "typescript": "5.3.3",
     "vitest": "^2.0.4",
     "tree-sitter-cli": "^0.22.6",
-    "tree-sitter": "^0.21.1"
+    "tree-sitter": "^0.21.1",
+    "web-tree-sitter": "^0.20.8"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {

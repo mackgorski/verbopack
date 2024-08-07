@@ -1,4 +1,32 @@
-const {grammar, rule, choice, seq, repeat, optional, prec} = require('tree-sitter-javascript/grammar');
+const {Grammar, Rule} = require('tree-sitter');
+
+function grammar(config) {
+  return new Grammar(config);
+}
+
+function rule(name) {
+  return new Rule(name);
+}
+
+function choice(...args) {
+  return {type: 'CHOICE', members: args};
+}
+
+function seq(...args) {
+  return {type: 'SEQ', members: args};
+}
+
+function repeat(rule) {
+  return {type: 'REPEAT', content: rule};
+}
+
+function optional(rule) {
+  return {type: 'CHOICE', members: [rule, {type: 'BLANK'}]};
+}
+
+function prec(precedence, rule) {
+  return {type: 'PREC', value: precedence, content: rule};
+}
 
 module.exports = grammar({
   name: 'typescript',
