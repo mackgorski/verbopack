@@ -16,7 +16,7 @@
     "generate-repo-map": "tree-sitter generate && tree-sitter parse \"**/*.{ts,tsx,js,jsx,json}\"",
     "tree-sitter:init": "tree-sitter init-config",
     "tree-sitter:generate": "tree-sitter generate --abi=latest typescript-grammar.js",
-    "tree-sitter:parse": "tree-sitter parse",
+    "tree-sitter:parse": "tree-sitter parse \"**/*.{ts,tsx,js,jsx,json}\"",
   },
   "dependencies": {
     "@nextui-org/react": "^2",
