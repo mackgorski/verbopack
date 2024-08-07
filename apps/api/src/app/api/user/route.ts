@@ -109,7 +109,7 @@ import { NextResponse } from 'next/server';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import prisma from '../../../lib/prisma';
 
-export const GET = withApiAuthRequired(async function route(req) {
+export const GET = withApiAuthRequired(async function route() {
     try {
         const session = await getSession();
         console.log('Session:', JSON.stringify(session, null, 2));

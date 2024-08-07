@@ -71,10 +71,9 @@
 
 import { handleAuth, handleLogin, handleCallback } from '@repo/auth';
 import prisma from '../../../../lib/prisma';
-import { AfterCallback, Session } from '@auth0/nextjs-auth0';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { AfterCallback } from '@auth0/nextjs-auth0';
 
-const afterCallback: AfterCallback = async (_req, _res, session) => {
+const afterCallback: AfterCallback = async (req, res, session) => {
     console.log('AfterCallback Session:', JSON.stringify(session, null, 2));
     if (session?.user) {
         const { sub, name, email, picture } = session.user;
