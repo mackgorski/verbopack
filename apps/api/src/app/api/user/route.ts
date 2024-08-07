@@ -25,16 +25,18 @@ export async function GET(req: NextRequest) {
         return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
     
-    console.log('Session object:', session);
-    console.log('User object from session:', session?.user);
-    
-    if (session?.user) {
-        console.log('User data returned from API:', {
-            id: session.user.user_id,
-            name: session.user.name, 
-            email: session.user.email,
-            image: session.user.picture,
-            emailVerified: session.user.email_verified,
-        });
+    if (session) {
+        console.log('Session object:', session);
+        console.log('User object from session:', session.user);
+        
+        if (session.user) {
+            console.log('User data returned from API:', {
+                id: session.user.user_id,
+                name: session.user.name, 
+                email: session.user.email,
+                image: session.user.picture,
+                emailVerified: session.user.email_verified,
+            });
+        }
     }
 }

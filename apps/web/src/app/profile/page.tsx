@@ -19,10 +19,10 @@ export default function Profile() {
     useEffect(() => {
         if (user) {
             setProfile({
-                name: user.name,
-                email: user.email,
-                image: user.picture,
-                emailVerified: user.email_verified,
+                name: user?.name ?? '',
+                email: user?.email ?? '',
+                image: user?.picture ?? '',
+                emailVerified: user?.email_verified ? new Date(user.email_verified) : null,
             });
         }
     }, [user]);
