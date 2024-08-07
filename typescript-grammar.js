@@ -173,9 +173,9 @@ module.exports = grammar({
 
     union_type: $ => prec.left(1, seq($.type, '|', $.type)),
     intersection_type: $ => prec.left(1, seq($.type, '&', $.type)),
-    function_type: $ => seq($.parameter_list, '=>', $.type),
+    function_type: $ => prec.right(2, seq($.parameter_list, '=>', $.type)),
     object_type: $ => seq('{', optional(seq($.type_member, repeat(seq(',', $.type_member)), optional(','))), '}'),
-    array_type: $ => seq($.type, '[]'),
+    array_type: $ => prec.left(3, seq($.type, '[]')),
 
     parameter_list: $ => seq('(', optional(seq($.parameter, repeat(seq(',', $.parameter)))), ')'),
     parameter: $ => seq($.identifier, optional(seq(':', $.type))),
@@ -255,7 +255,8 @@ module.exports = grammar({
   conflicts: $ => [
     [$._expression, $.type],
     [$.export_declaration, $.named_imports],
-    [$.export_specifier, $.import_specifier]
+    [$.export_specifier, $.import_specifier],
+    [$.function_type, $.array_type]
   ]
 });
 
