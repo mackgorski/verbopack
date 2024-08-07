@@ -45,7 +45,11 @@ pnpm-lock.yaml
 *.dylib
 *.dll
 build/
-bindings/
+bindings/c/
+bindings/go/
+bindings/python/
+bindings/rust/
+bindings/swift/
 src/
 prebuilds/
 binding.gyp
