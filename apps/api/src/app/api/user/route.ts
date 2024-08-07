@@ -126,12 +126,6 @@ export async function GET(req: Request) {
         
         console.log('Auth0 ID:', auth0Id);
 
-        if (!auth0Id) {
-            const unableToIdentifyResponse = NextResponse.json({ error: 'Unable to identify user' }, { status: 400 });
-            console.log('Unable to identify user response:', unableToIdentifyResponse);
-            return unableToIdentifyResponse;
-        }
-
         const user = await prisma.user.findUnique({
             where: { auth0Id },
         });
