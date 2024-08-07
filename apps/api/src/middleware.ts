@@ -22,22 +22,20 @@
 // import { NextResponse } from 'next/server';
 
 import { NextResponse } from 'next/server';
-import { getSession } from '@auth0/nextjs-auth0';
+import type { NextRequest } from 'next/server';
 
-export async function middleware(request: Request) {
+export function middleware(request: NextRequest) {
     const response = NextResponse.next();
 
+    // Add CORS headers
     response.headers.set('Access-Control-Allow-Origin', 'http://localhost:3000');
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     response.headers.set('Access-Control-Allow-Credentials', 'true');
 
-    // Check if the request is for the user API
-    if (request.url.includes('/api/user')) {
-        const session = await getSession();
-        if (!session) {
-            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
-        }
+    // Handle OPTIONS request
+    if (request.method === 'OPTIONS') {
+        return new NextResponse(null, { status: 200, headers: response.headers });
     }
 
     return response;
@@ -45,7 +43,7 @@ export async function middleware(request: Request) {
 
 export const config = {
     matcher: '/api/:path*',
-}
+};
 
 // export const config = {
 //     matcher: '/api/:path*',

@@ -22,7 +22,6 @@ export default function Profile() {
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.accessToken}` // Add this line
                 },
             })
                 .then(res => {
@@ -45,28 +44,37 @@ export default function Profile() {
     }, [user]);
 
     return (
-        <div className="p-4">
+        <main className="p-4">
             <h1 className="text-2xl font-bold mb-4">Profile</h1>
             {isLoading ? (
-                <p className="text-gray-600">Loading...</p>
+                <p className="text-gray-600" aria-live="polite">Loading...</p>
             ) : !user ? (
-                <p className="text-red-500">Please log in to view this page</p>
+                <p className="text-red-500" role="alert">Please log in to view this page</p>
             ) : error ? (
-                <p className="text-red-500">Error: {error}</p>
+                <p className="text-red-500" role="alert">Error: {error}</p>
             ) : profile ? (
-                <div className="space-y-2">
+                <section className="space-y-2">
                     <p><strong>Name:</strong> {profile.name || 'N/A'}</p>
                     <p><strong>Email:</strong> {profile.email || 'N/A'}</p>
                     <p><strong>Email Verified:</strong> {profile.emailVerified ? 'Yes' : 'No'}</p>
                     {profile.image && (
-                        <div className="mt-4">
-                            <Image src={profile.image} alt={profile.name || 'User'} width={100} height={100} className="rounded-full" />
-                        </div>
+                        <figure className="mt-4 relative">
+                            <div className="w-[100px] h-[100px] rounded-full bg-gray-200 animate-pulse"></div>
+                            <Image 
+                                src={profile.image} 
+                                alt={`Profile picture of ${profile.name || 'user'}`} 
+                                width={100} 
+                                height={100} 
+                                className="rounded-full absolute top-0 left-0"
+                                onLoadingComplete={(img) => img.classList.remove('opacity-0')}
+                                style={{ opacity: 0, transition: 'opacity 0.3s' }}
+                            />
+                        </figure>
                     )}
-                </div>
+                </section>
             ) : (
-                <p className="text-gray-600">Loading profile...</p>
+                <p className="text-gray-600" aria-live="polite">Loading profile...</p>
             )}
-        </div>
+        </main>
     );
 }
