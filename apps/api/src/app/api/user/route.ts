@@ -109,11 +109,11 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0';
 import prisma from '../../../lib/prisma';
 
-export async function GET(req: Request) {
+export async function GET(req: Request, res: Response) {
     try {
         console.log('Incoming request:', req);
         
-        const session = await getSession(req);
+        const session = await getSession(req, res);
         
         console.log('Session:', session);
 
