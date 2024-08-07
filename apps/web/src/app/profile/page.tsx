@@ -184,23 +184,27 @@ export default function Profile() {
     }, [user]);
 
     return (
-        <div>
-            <h1>Profile</h1>
+        <div className="p-4">
+            <h1 className="text-2xl font-bold mb-4">Profile</h1>
             {isLoading ? (
-                <p>Loading...</p>
+                <p className="text-gray-600">Loading...</p>
             ) : !user ? (
-                <p>Please login to view this page</p>
+                <p className="text-red-500">Please log in to view this page</p>
             ) : error ? (
-                <p>Error: {error}</p>
+                <p className="text-red-500">Error: {error}</p>
             ) : profile ? (
-                <>
-                    <p>Name: {profile.name || 'N/A'}</p>
-                    <p>Email: {profile.email || 'N/A'}</p>
-                    <p>Email Verified: {profile.emailVerified ? 'Yes' : 'No'}</p>
-                    {profile.image && <Image src={profile.image} alt={profile.name || 'User'} width={100} height={100} />}
-                </>
+                <div className="space-y-2">
+                    <p><strong>Name:</strong> {profile.name || 'N/A'}</p>
+                    <p><strong>Email:</strong> {profile.email || 'N/A'}</p>
+                    <p><strong>Email Verified:</strong> {profile.emailVerified ? 'Yes' : 'No'}</p>
+                    {profile.image && (
+                        <div className="mt-4">
+                            <Image src={profile.image} alt={profile.name || 'User'} width={100} height={100} className="rounded-full" />
+                        </div>
+                    )}
+                </div>
             ) : (
-                <p>Loading profile...</p>
+                <p className="text-gray-600">Loading profile...</p>
             )}
         </div>
     );
