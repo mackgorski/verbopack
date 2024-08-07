@@ -1,5 +1,3 @@
-const {grammar, rule, choice, seq, repeat, optional, prec} = require('tree-sitter-tools');
-
 module.exports = grammar({
   name: 'typescript',
 
