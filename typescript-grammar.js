@@ -221,6 +221,15 @@ module.exports = grammar({
     import_specifier: $ => choice(
       $.identifier,
       seq($.identifier, 'as', $.identifier)
+    ),
+
+    comment: $ => choice(
+      seq('//', /.*/),
+      seq(
+        '/*',
+        /[^*]*\*+([^/*][^*]*\*+)*/,
+        '/'
+      )
     )
   },
 
@@ -231,20 +240,7 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$._expression, $.type]
-  ],
-
-  rules: {
-    // ... (keep all the existing rules here)
-
-    comment: $ => choice(
-      seq('//', /.*/),
-      seq(
-        '/*',
-        /[^*]*\*+([^/*][^*]*\*+)*/,
-        '/'
-      )
-    )
-  }
+  ]
 });
 
 function commaSep(rule) {
