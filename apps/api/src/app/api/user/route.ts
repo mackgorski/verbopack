@@ -1,6 +1,5 @@
 import { getSession } from '@auth0/nextjs-auth0';
 import { NextRequest, NextResponse } from 'next/server';
-import { ManagementClient } from 'auth0';
 
 export async function GET(req: NextRequest) {
     try {
@@ -10,14 +9,7 @@ export async function GET(req: NextRequest) {
             return new NextResponse(JSON.stringify({ error: 'Not authenticated' }), { status: 401 });
         }
 
-        const auth0 = new ManagementClient({
-            domain: process.env.AUTH0_DOMAIN,
-            clientId: process.env.AUTH0_CLIENT_ID,
-            clientSecret: process.env.AUTH0_CLIENT_SECRET,
-            scope: 'read:users',
-        });
-
-        const user = await auth0.getUser({ id: session.user.sub });
+        const user = session.user;
 
         return NextResponse.json({
             id: user.user_id,

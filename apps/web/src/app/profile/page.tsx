@@ -19,28 +19,12 @@ export default function Profile() {
 
     useEffect(() => {
         if (user) {
-            fetch('http://localhost:3001/api/user', {
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    setProfile(data);
-                })
-                .catch(err => {
-                    console.error('Error fetching user profile:', err);
-                    setError(err.message);
-                });
+            setProfile({
+                name: user.name,
+                email: user.email,
+                image: user.picture,
+                emailVerified: user.email_verified,
+            });
         }
     }, [user]);
 
