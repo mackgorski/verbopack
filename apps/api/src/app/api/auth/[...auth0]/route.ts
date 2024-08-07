@@ -69,10 +69,11 @@
 // NOTES: THIS WORKS!!!!
 
 
-import { handleAuth, handleLogin, handleCallback, AfterCallback, Session } from '@auth0/nextjs-auth0';
+import { handleAuth, handleLogin, handleCallback, AfterCallback } from '@auth0/nextjs-auth0';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
 
-const afterCallback: AfterCallback = async (req, res, session) => {
+const afterCallback: AfterCallback = async (_req: NextRequest, _res: NextResponse, session: any) => {
     if (session?.user) {
         const { sub, name, email, picture } = session.user;
         try {
