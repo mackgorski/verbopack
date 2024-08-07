@@ -198,8 +198,17 @@ export default function Profile() {
                     <p><strong>Email:</strong> {profile.email || 'N/A'}</p>
                     <p><strong>Email Verified:</strong> {profile.emailVerified ? 'Yes' : 'No'}</p>
                     {profile.image && (
-                        <figure className="mt-4">
-                            <Image src={profile.image} alt={`Profile picture of ${profile.name || 'user'}`} width={100} height={100} className="rounded-full" />
+                        <figure className="mt-4 relative">
+                            <div className="w-[100px] h-[100px] rounded-full bg-gray-200 animate-pulse"></div>
+                            <Image 
+                                src={profile.image} 
+                                alt={`Profile picture of ${profile.name || 'user'}`} 
+                                width={100} 
+                                height={100} 
+                                className="rounded-full absolute top-0 left-0"
+                                onLoadingComplete={(img) => img.classList.remove('opacity-0')}
+                                style={{ opacity: 0, transition: 'opacity 0.3s' }}
+                            />
                         </figure>
                     )}
                 </section>
