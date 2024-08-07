@@ -39,3 +39,9 @@ pnpm-lock.yaml
 
 # aider
 .aider*
+
+# tree-sitter
+*.so
+*.dylib
+*.dll
+build/
