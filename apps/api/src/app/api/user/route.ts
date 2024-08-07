@@ -1,47 +1,35 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from '@auth0/nextjs-auth0';
-import prisma from '../../../lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+import { ManagementClient } from 'auth0';
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest) {
     try {
-        console.log('Incoming request:', req);
-
-        const session = await getSession(req, res);
-
-        console.log('Session:', session);
-        console.log('Session User:', session?.user);
+        const session = await getSession(req, new NextResponse());
 
         if (!session?.user) {
-            console.log('No session or user sub');
-            return res.status(401).json({ error: 'Not authenticated' });
+            return new NextResponse(JSON.stringify({ error: 'Not authenticated' }), { status: 401 });
         }
 
-        const userEmail = session.user.email;
-        console.log('User Email:', userEmail);
-
-        if (!userEmail) {
-            console.log('User email is undefined');
-            return res.status(400).json({ error: 'User email is undefined' });
-        }
-
-        const user = await prisma.user.findUnique({
-            where: { email: userEmail },
+        const auth0 = new ManagementClient({
+            domain: process.env.AUTH0_DOMAIN,
+            clientId: process.env.AUTH0_CLIENT_ID,
+            clientSecret: process.env.AUTH0_CLIENT_SECRET,
+            scope: 'read:users',
         });
 
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
+        const user = await auth0.getUser({ id: session.user.sub });
 
-        // Return only necessary user information
-        return res.status(200).json({
-            id: user.id,
+        return NextResponse.json({
+            id: user.user_id,
             name: user.name,
             email: user.email,
-            image: user.image,
-            emailVerified: user.emailVerified,
+            image: user.picture,
+            emailVerified: user.email_verified,
+        }, {
+            status: 200,
         });
     } catch (error) {
         console.error('Error in user route:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
 }
