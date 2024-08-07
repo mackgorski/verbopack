@@ -6,7 +6,7 @@ module.exports = grammar({
 
     _statement: $ => choice(
       $.import_declaration,
-      $.export_declaration,
+      $.export_statement,
       $.function_declaration,
       $.variable_declaration,
       $.interface_declaration,
@@ -32,14 +32,32 @@ module.exports = grammar({
       seq($.identifier, optional(seq(',', $.named_imports)))
     ),
 
+    export_statement: $ => choice(
+      $.export_declaration,
+      seq('export', $.declaration)
+    ),
+
     export_declaration: $ => choice(
       seq('export', '*', 'from', $.string, ';'),
       seq('export', $.import_clause, 'from', $.string, ';'),
-      seq('export', choice($.function_declaration, $.variable_declaration, $.class_declaration, $.interface_declaration))
+      seq('export', '{', commaSep($.export_specifier), '}', optional(seq('from', $.string)), ';')
+    ),
+
+    export_specifier: $ => seq(
+      $.identifier,
+      optional(seq('as', $.identifier))
+    ),
+
+    declaration: $ => choice(
+      $.function_declaration,
+      $.variable_declaration,
+      $.class_declaration,
+      $.interface_declaration,
+      $.type_alias_declaration,
+      $.enum_declaration
     ),
 
     function_declaration: $ => seq(
-      optional('export'),
       'function',
       $.identifier,
       $.parameter_list,
@@ -64,7 +82,6 @@ module.exports = grammar({
     ),
 
     class_declaration: $ => seq(
-      optional('export'),
       'class',
       $.identifier,
       optional($.type_parameters),
@@ -83,7 +100,6 @@ module.exports = grammar({
     ),
 
     enum_declaration: $ => seq(
-      optional('export'),
       optional('const'),
       'enum',
       $.identifier,
@@ -208,3 +224,7 @@ module.exports = grammar({
     )
   }
 });
+
+function commaSep(rule) {
+  return optional(seq(rule, repeat(seq(',', rule)), optional(',')));
+}
