@@ -13,7 +13,7 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "cypress run",
     "test:e2e:dev": "cypress open",
-    "generate-repo-map": "tree-sitter generate && tree-sitter parse \"**/*.{ts,tsx,js,jsx,json}\"",
+    "generate-repo-map": "tree-sitter generate && tree-sitter parse \"**/*.{ts,tsx,js,jsx,json}\" || echo 'No files found to parse. Check your current directory and file extensions.'"
     "tree-sitter:init": "tree-sitter init-config",
     "tree-sitter:generate": "tree-sitter generate --abi=latest typescript-grammar.js",
     "tree-sitter:parse": "tree-sitter parse \"**/*.{ts,tsx,js,jsx,json}\"",
