@@ -113,17 +113,18 @@ export async function GET(req: Request) {
     try {
         console.log('Incoming request:', req);
         
-        const session = await getSession();
+        const session = await getSession(req);
         
         console.log('Session:', session);
 
-        if (!session || !session.user) {
-            const notAuthenticatedResponse = NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
-            console.log('Not authenticated response:', notAuthenticatedResponse);
-            return notAuthenticatedResponse;
+        if (!session?.user?.sub) {
+            console.log('No session or user sub');
+            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
         }
-
+        
         const auth0Id = session.user.sub;
+        
+        console.log('Auth0 ID:', auth0Id);
 
         if (!auth0Id) {
             const unableToIdentifyResponse = NextResponse.json({ error: 'Unable to identify user' }, { status: 400 });
