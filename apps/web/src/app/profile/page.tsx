@@ -46,7 +46,6 @@ export default function Profile() {
                             <div className="w-[100px] h-[100px] rounded-full bg-gray-200 animate-pulse"></div>
                             <Image
                                 src={profile.image || ''}
-                                alt={`Profile picture of ${profile.name || 'user'}`}  
                                 alt={`Profile picture of ${profile.name || 'user'}`}
                                 width={100}
                                 height={100}
