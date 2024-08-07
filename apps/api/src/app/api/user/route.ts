@@ -109,7 +109,7 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0';
 import prisma from '../../../lib/prisma';
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req: Request) {
     try {
         console.log('Incoming request:', req);
         
@@ -119,7 +119,7 @@ export async function GET(req: Request, res: Response) {
 
         if (!session?.user?.sub) {
             console.log('No session or user sub');
-            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+            return new NextResponse(JSON.stringify({ error: 'Not authenticated' }), { status: 401 });
         }
         
         const user = await prisma.user.findUnique({
@@ -127,25 +127,21 @@ export async function GET(req: Request, res: Response) {
         });
 
         if (!user) {
-            const userNotFoundResponse = NextResponse.json({ error: 'User not found' }, { status: 404 });
-            console.log('User not found response:', userNotFoundResponse);
-            return userNotFoundResponse;
+            return new NextResponse(JSON.stringify({ error: 'User not found' }), { status: 404 });
         }
 
         // Return only necessary user information
-        const userResponse = NextResponse.json({
+        return NextResponse.json({
             id: user.id, 
             name: user.name,
             email: user.email,
             image: user.image,
             emailVerified: user.emailVerified,
+        }, {
+            status: 200,
         });
-        
-        console.log('User response:', userResponse);
-        
-        return userResponse;
     } catch (error) {
         console.error('Error in user route:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
 }
