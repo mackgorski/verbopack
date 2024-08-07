@@ -50,6 +50,10 @@ bindings/go/
 bindings/python/
 bindings/rust/
 bindings/swift/
-src/
+src/*
+!src/grammar.json
+!src/node-types.json
+!src/parser.c
+!src/tree_sitter/
 prebuilds/
 binding.gyp
