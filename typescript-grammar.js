@@ -1,3 +1,5 @@
+const {grammar, rule, choice, seq, repeat, optional, prec} = require('tree-sitter-tools');
+
 module.exports = grammar({
   name: 'typescript',
 
@@ -248,3 +250,7 @@ module.exports = grammar({
     )
   }
 });
+
+function commaSep(rule) {
+  return optional(seq(rule, repeat(seq(',', rule)), optional(',')));
+}
