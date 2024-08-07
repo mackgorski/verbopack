@@ -111,16 +111,24 @@ import prisma from '../../../lib/prisma';
 
 export async function GET(req: Request) {
     try {
+        console.log('Incoming request:', req);
+        
         const session = await getSession();
+        
+        console.log('Session:', session);
 
         if (!session || !session.user) {
-            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+            const notAuthenticatedResponse = NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+            console.log('Not authenticated response:', notAuthenticatedResponse);
+            return notAuthenticatedResponse;
         }
 
         const auth0Id = session.user.sub;
 
         if (!auth0Id) {
-            return NextResponse.json({ error: 'Unable to identify user' }, { status: 400 });
+            const unableToIdentifyResponse = NextResponse.json({ error: 'Unable to identify user' }, { status: 400 });
+            console.log('Unable to identify user response:', unableToIdentifyResponse);
+            return unableToIdentifyResponse;
         }
 
         const user = await prisma.user.findUnique({
@@ -128,17 +136,23 @@ export async function GET(req: Request) {
         });
 
         if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            const userNotFoundResponse = NextResponse.json({ error: 'User not found' }, { status: 404 });
+            console.log('User not found response:', userNotFoundResponse);
+            return userNotFoundResponse;
         }
 
         // Return only necessary user information
-        return NextResponse.json({
-            id: user.id,
+        const userResponse = NextResponse.json({
+            id: user.id, 
             name: user.name,
             email: user.email,
             image: user.image,
             emailVerified: user.emailVerified,
         });
+        
+        console.log('User response:', userResponse);
+        
+        return userResponse;
     } catch (error) {
         console.error('Error in user route:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
