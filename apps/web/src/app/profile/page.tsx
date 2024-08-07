@@ -28,8 +28,8 @@ export default function Profile() {
     }, [user]);
 
     return (
-        <main className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Profile</h1>
+        <main className="p-4" aria-label="User profile">
+            <h1 className="text-2xl font-bold mb-4" aria-label="Profile heading">Profile</h1>
             {isLoading ? (
                 <p className="text-gray-600" aria-live="polite">Loading...</p>
             ) : !user ? (
@@ -37,7 +37,7 @@ export default function Profile() {
             ) : userError ? (
                 <p className="text-red-500" role="alert">Error: {userError.message}</p>
             ) : profile ? (
-                <section className="space-y-2">
+                <section className="space-y-2" aria-label="Profile details">
                     <p><strong>Name:</strong> {profile.name || 'N/A'}</p>
                     <p><strong>Email:</strong> {profile.email || 'N/A'}</p>
                     <p><strong>Email Verified:</strong> {profile.emailVerified ? 'Yes' : 'No'}</p>
