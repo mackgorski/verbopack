@@ -222,10 +222,29 @@ module.exports = grammar({
       $.identifier,
       seq($.identifier, 'as', $.identifier)
     )
-  }
-});
+  },
 
-  commaSep(rule) {
-    return optional(seq(rule, repeat(seq(',', rule)), optional(',')));
+  extras: $ => [
+    /\s/,
+    $.comment
+  ],
+
+  conflicts: $ => [
+    [$._expression, $.type]
+  ],
+
+  word: $ => $.identifier,
+
+  rules: {
+    // ... (keep all the existing rules here)
+
+    comment: $ => choice(
+      seq('//', /.*/),
+      seq(
+        '/*',
+        /[^*]*\*+([^/*][^*]*\*+)*/,
+        '/'
+      )
+    )
   }
 });
