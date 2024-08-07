@@ -9,6 +9,8 @@ declare module '@auth0/nextjs-auth0' {
             email: string;
             name: string;
             picture: string;
+            email_verified: boolean;
+            user_id: string;
         };
         returnTo?: string;
     }
