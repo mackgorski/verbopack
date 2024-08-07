@@ -10,5 +10,6 @@ declare module '@auth0/nextjs-auth0' {
             name: string;
             picture: string;
         };
+        returnTo?: string;
     }
 }

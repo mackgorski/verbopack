@@ -122,12 +122,8 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
         }
         
-        const auth0Id = session.user.sub;
-        
-        console.log('Auth0 ID:', auth0Id);
-
         const user = await prisma.user.findUnique({
-            where: { auth0Id },
+            where: { auth0Id: session.user.sub },
         });
 
         if (!user) {
