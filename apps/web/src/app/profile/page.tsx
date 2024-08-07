@@ -3,7 +3,6 @@
 import { useUser } from '@repo/auth';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Image from "next/image";
 
 interface UserProfile {
     name?: string;
@@ -48,9 +47,9 @@ export default function Profile() {
                             <div className="w-[100px] h-[100px] rounded-full bg-gray-200 animate-pulse"></div>
                             <Image
                                 src={profile.image || ''}
-                                alt={`Profile picture of ${profile.name || 'user'}`} 
-                                width={100} 
-                                height={100} 
+                                alt={`Profile picture of ${profile.name || 'user'}`}
+                                width={100}
+                                height={100}
                                 className="rounded-full absolute top-0 left-0"
                                 onLoadingComplete={(img) => img.classList.remove('opacity-0')}
                                 style={{ opacity: 0, transition: 'opacity 0.3s' }}
