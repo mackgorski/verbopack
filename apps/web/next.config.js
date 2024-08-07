@@ -30,7 +30,7 @@ const nextConfig = {
         ];
     },
     images: {
-        domains: ['s.gravatar.com', 'cdn.auth0.com'],
+        domains: ['s.gravatar.com', 'cdn.auth0.com', 'dev-fe8jacbga812desp.us.auth0.com'],
     },
 };
 

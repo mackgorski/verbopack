@@ -1,31 +1,10 @@
 'use client';
 
-import { useUser } from '@repo/auth';
-import { useEffect, useState } from 'react';
+import { useAuth } from '@/lib/auth';
 import Image from 'next/image';
 
-interface UserProfile {
-    name?: string;
-    email?: string;
-    image?: string;
-    emailVerified?: Date | null;
-}
-
 export default function Profile() {
-    const { user, error: userError, isLoading } = useUser();
-    console.log('User object from API:', user);
-    const [profile, setProfile] = useState<UserProfile | null>(null);
-
-    useEffect(() => {
-        if (user) {
-            setProfile({
-                name: user?.name ?? '',
-                email: user?.email ?? '',
-                image: user?.picture ?? '',
-                emailVerified: user?.email_verified ? new Date(user.email_verified) : null,
-            });
-        }
-    }, [user]);
+  const { isLoading, user, error } = useAuth();
 
     return (
         <main className="p-4" aria-label="User profile">
