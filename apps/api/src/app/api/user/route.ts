@@ -111,7 +111,7 @@ import prisma from '../../../lib/prisma';
 
 export const GET = withApiAuthRequired(async function route(req) {
     try {
-        const session = await getSession(req);
+        const session = await getSession();
         console.log('Session:', JSON.stringify(session, null, 2));
 
         if (!session || !session.user) {
