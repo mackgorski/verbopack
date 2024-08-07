@@ -1,28 +1,30 @@
+const {grammar, rule, choice, seq, repeat, optional, prec} = require('tree-sitter-javascript/grammar');
+
 module.exports = grammar({
   name: 'typescript',
 
   rules: {
-    source_file: $ => repeat($._statement),
+    source_file: () => repeat(rule('_statement')),
 
-    _statement: $ => choice(
-      $.import_declaration,
-      $.export_statement,
-      $.function_declaration,
-      $.variable_declaration,
-      $.interface_declaration,
-      $.class_declaration,
-      $.type_alias_declaration,
-      $.enum_declaration,
-      $.expression_statement
+    _statement: () => choice(
+      rule('import_declaration'),
+      rule('export_statement'),
+      rule('function_declaration'),
+      rule('variable_declaration'),
+      rule('interface_declaration'),
+      rule('class_declaration'),
+      rule('type_alias_declaration'),
+      rule('enum_declaration'),
+      rule('expression_statement')
     ),
 
-    import_declaration: $ => seq(
+    import_declaration: () => seq(
       'import',
       choice(
-        seq($.import_clause, 'from'),
-        $.string
+        seq(rule('import_clause'), 'from'),
+        rule('string')
       ),
-      $.string,
+      rule('string'),
       ';'
     ),
 
@@ -119,12 +121,12 @@ module.exports = grammar({
       $.array
     ),
 
-    identifier: $ => /[a-zA-Z_]\w*/,
-    number: $ => /\d+/,
-    string: $ => /'[^']*'|"[^"]*"/,
-    true: $ => 'true',
-    false: $ => 'false',
-    null: $ => 'null',
+    identifier: () => /[a-zA-Z_]\w*/,
+    number: () => /\d+/,
+    string: () => /'[^']*'|"[^"]*"/,
+    true: () => 'true',
+    false: () => 'false',
+    null: () => 'null',
 
     object: $ => seq(
       '{',
@@ -228,3 +230,5 @@ module.exports = grammar({
 function commaSep(rule) {
   return optional(seq(rule, repeat(seq(',', rule)), optional(',')));
 }
+
+module.exports.commaSep = commaSep;
