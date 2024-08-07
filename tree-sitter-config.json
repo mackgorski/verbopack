@@ -1,14 +1,12 @@
 {
   "parser-directories": [
-    "node_modules/tree-sitter-typescript/typescript",
-    "node_modules/tree-sitter-javascript",
-    "node_modules/tree-sitter-json"
+    "."
   ],
   "file-types": {
     "ts": "typescript",
     "tsx": "typescript",
-    "js": "javascript",
-    "jsx": "javascript",
+    "js": "typescript",
+    "jsx": "typescript",
     "json": "json"
   }
 }
