@@ -12,10 +12,9 @@ interface UserProfile {
 }
 
 export default function Profile() {
-    const { user, isLoading } = useUser();
+    const { user, error: userError, isLoading } = useUser();
     console.log('User object from API:', user);
     const [profile, setProfile] = useState<UserProfile | null>(null);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (user) {
@@ -35,8 +34,8 @@ export default function Profile() {
                 <p className="text-gray-600" aria-live="polite">Loading...</p>
             ) : !user ? (
                 <p className="text-red-500" role="alert">Please log in to view this page</p>
-            ) : error ? (
-                <p className="text-red-500" role="alert">Error: {error}</p>
+            ) : userError ? (
+                <p className="text-red-500" role="alert">Error: {userError.message}</p>
             ) : profile ? (
                 <section className="space-y-2">
                     <p><strong>Name:</strong> {profile.name || 'N/A'}</p>
