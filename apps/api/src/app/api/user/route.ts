@@ -113,11 +113,11 @@ export async function GET(req: NextRequest) {
     try {
         console.log('Incoming request:', req);
         
-        const session = await getSession(req, new NextResponse());
+        const session = await getSession(req);
         
         console.log('Session:', session);
 
-        if (!session?.user?.sub) {
+        if (!session?.user) {
             console.log('No session or user sub');
             return new NextResponse(JSON.stringify({ error: 'Not authenticated' }), { status: 401 });
         }
