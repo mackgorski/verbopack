@@ -15,7 +15,7 @@
     "test:e2e:dev": "cypress open",
     "generate-repo-map": "tree-sitter generate && tree-sitter parse .",
     "tree-sitter:init": "tree-sitter init-config",
-    "tree-sitter:generate": "tree-sitter generate typescript-grammar.js && tree-sitter generate json-grammar.js",
+    "tree-sitter:generate": "tree-sitter generate typescript-grammar.js",
     "tree-sitter:parse": "tree-sitter parse"
   },
   "dependencies": {
