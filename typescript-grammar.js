@@ -229,8 +229,12 @@ module.exports = grammar({
       '}'
     ),
     import_specifier: $ => choice(
-      $.identifier,
-      seq($.identifier, 'as', $.identifier)
+      field('imported', $.identifier),
+      seq(
+        field('imported', $.identifier),
+        'as',
+        field('local', $.identifier)
+      )
     ),
 
     comment: $ => choice(
