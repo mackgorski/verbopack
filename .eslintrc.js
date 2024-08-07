@@ -42,5 +42,11 @@ module.exports = {
                 '@typescript-eslint/no-var-requires': 'error'
             }
         }
+    ],
+    ignorePatterns: [
+        "bindings/**",
+        "grammar.js",
+        "json-grammar.js",
+        "typescript-grammar.js",
     ]
 };
