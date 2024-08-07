@@ -161,7 +161,7 @@ export default function Profile() {
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.accessToken}` // Add this line
+                    'Authorization': `Bearer ${user.accessToken}`
                 },
             })
                 .then(res => {
