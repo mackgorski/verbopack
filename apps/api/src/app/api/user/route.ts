@@ -24,4 +24,13 @@ export async function GET(req: NextRequest) {
         console.error('Error in user route:', error);
         return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
+
+    console.log('User data returned from API:', {
+        id: user.user_id,
+        name: user.name,
+        email: user.email,
+        image: user.picture,
+        emailVerified: user.email_verified,
+    });
+}
 }

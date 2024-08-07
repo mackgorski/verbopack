@@ -6,6 +6,8 @@ export function useUser() {
     // Log the user object to check its structure
     console.log('User object:', user);
     
+    console.log('User data received in useUser hook:', user);
+    
     return { user, error, isLoading };
 }
 
