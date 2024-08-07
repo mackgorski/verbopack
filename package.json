@@ -16,13 +16,24 @@
     "generate-repo-map": "tree-sitter generate && tree-sitter parse .",
     "tree-sitter:init": "tree-sitter init-config",
     "tree-sitter:generate": "tree-sitter generate typescript-grammar.js",
-    "tree-sitter:parse": "tree-sitter parse"
+    "tree-sitter:parse": "tree-sitter parse",
+    "install": "node-gyp-build",
+    "prebuildify": "prebuildify --napi --strip"
   },
   "dependencies": {
     "@nextui-org/react": "^2",
     "react": "^18",
     "react-dom": "^18",
-    "tailwindcss": "^3"
+    "tailwindcss": "^3",
+    "node-gyp-build": "^4.8.0"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.0"
+  },
+  "peerDependenciesMeta": {
+    "tree_sitter": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
@@ -70,10 +81,26 @@
     "vitest": "^2.0.4",
     "tree-sitter-cli": "^0.22.6",
     "tree-sitter": "^0.21.1",
-    "web-tree-sitter": "^0.20.8"
+    "web-tree-sitter": "^0.20.8",
+    "prebuildify": "^6.0.0"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
     "node": ">=20"
-  }
+  },
+  "types": "bindings/node",
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**"
+  ],
+  "tree-sitter": [
+    {
+      "scope": "source.typescript",
+      "injection-regex": "^typescript$"
+    }
+  ]
 }
