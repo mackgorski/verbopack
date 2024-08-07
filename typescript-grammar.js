@@ -253,10 +253,8 @@ module.exports = grammar({
   ],
 
   conflicts: $ => [
-    [$._expression, $.type],
     [$.export_declaration, $.named_imports],
-    [$.export_specifier, $.import_specifier],
-    [$.function_type, $.array_type]
+    [$.export_specifier, $.import_specifier]
   ]
 });
 
