@@ -13,6 +13,7 @@ interface UserProfile {
 
 export default function Profile() {
     const { user, isLoading } = useUser();
+    console.log('User object from API:', user);
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [error, setError] = useState<string | null>(null);
 
