@@ -33,4 +33,3 @@ export async function GET(req: NextRequest) {
         emailVerified: user.email_verified,
     });
 }
-}
