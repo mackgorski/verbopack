@@ -48,6 +48,16 @@ module.exports = grammar({
       optional(seq('as', $.identifier))
     ),
 
+    named_imports: $ => seq(
+      '{',
+      optional(seq(
+        $.import_specifier,
+        repeat(seq(',', $.import_specifier)),
+        optional(',')
+      )),
+      '}'
+    ),
+
     declaration: $ => choice(
       $.function_declaration,
       $.variable_declaration,
@@ -239,7 +249,8 @@ module.exports = grammar({
   ],
 
   conflicts: $ => [
-    [$._expression, $.type]
+    [$._expression, $.type],
+    [$.export_declaration, $.named_imports]
   ]
 });
 
