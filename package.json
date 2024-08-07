@@ -13,7 +13,10 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "cypress run",
     "test:e2e:dev": "cypress open",
-    "generate-repo-map": "tree-sitter generate && tree-sitter parse"
+    "generate-repo-map": "tree-sitter generate && tree-sitter parse .",
+    "tree-sitter:init": "tree-sitter init-config",
+    "tree-sitter:generate": "tree-sitter generate",
+    "tree-sitter:parse": "tree-sitter parse"
   },
   "dependencies": {
     "@nextui-org/react": "^2",
@@ -65,7 +68,8 @@
     "turbo": "^2.0.9",
     "typescript": "5.3.3",
     "vitest": "^2.0.4",
-    "tree-sitter-cli": "^0.20.8"
+    "tree-sitter-cli": "^0.20.8",
+    "tree-sitter": "^0.20.6"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
