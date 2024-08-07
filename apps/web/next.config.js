@@ -27,6 +27,11 @@ const nextConfig = {
                 source: '/api/:path*',
                 destination: 'http://localhost:3001/api/:path*',
             },
+            // Add a rewrite for the /profile route
+            {
+                source: '/profile',
+                destination: '/api/user',
+            },
         ];
     },
     images: {
