@@ -113,7 +113,7 @@ export async function GET(req: Request) {
     try {
         console.log('Incoming request:', req);
         
-        const session = await getSession(req, res);
+        const session = await getSession(req);
         
         console.log('Session:', session);
 
