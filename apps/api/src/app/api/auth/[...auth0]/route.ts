@@ -69,60 +69,23 @@
 // NOTES: THIS WORKS!!!!
 
 
-import { handleAuth, handleLogin, handleCallback } from '@repo/auth';
+import { handleAuth, handleLogin, handleCallback } from '@auth0/nextjs-auth0';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
-import { AfterCallback, Session } from '@auth0/nextjs-auth0';
 
-const afterCallback: AfterCallback = async (req, res, session: Session | null | undefined) => {
-    console.log('AfterCallback Session:', JSON.stringify(session, null, 2));
+const afterCallback = async (req: NextRequest, res: NextResponse, session: any) => {
     if (session?.user) {
         const { sub, name, email, picture } = session.user;
         try {
-            let user = await prisma.user.findUnique({
+            const user = await prisma.user.upsert({
                 where: { auth0Id: sub },
+                update: { name, email, image: picture },
+                create: { auth0Id: sub, name, email, image: picture },
             });
-
-            if (!user && email) {
-                // If user not found by auth0Id, try to find by email
-                user = await prisma.user.findUnique({
-                    where: { email },
-                });
-
-                if (user) {
-                    // If found by email, update the auth0Id
-                    user = await prisma.user.update({
-                        where: { id: user.id },
-                        data: { auth0Id: sub },
-                    });
-                }
-            }
-
-            if (!user) {
-                // If still not found, create a new user
-                user = await prisma.user.create({
-                    data: { auth0Id: sub, name, email, image: picture },
-                });
-            } else {
-                // Update existing user
-                user = await prisma.user.update({
-                    where: { id: user.id },
-                    data: { name, email, image: picture },
-                });
-            }
-
             console.log('User updated/created successfully:', user);
-            
-            // Ensure the session contains the user information
-            session.user = {
-                ...session.user,
-                ...user,
-            };
         } catch (error) {
             console.error('Error updating/creating user:', error);
-            console.error(JSON.stringify(error, null, 2));
         }
-    } else {
-        console.error('No user in session after login');
     }
     return session;
 };
@@ -131,7 +94,9 @@ export const GET = handleAuth({
     login: handleLogin({
         returnTo: '/profile'
     }),
-    callback: handleCallback({ afterCallback })
+    callback: handleCallback({
+        afterCallback,
+    })
 });
 
 export const POST = handleAuth();

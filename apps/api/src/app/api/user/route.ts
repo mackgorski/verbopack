@@ -112,70 +112,23 @@ import prisma from '../../../lib/prisma';
 export const GET = withApiAuthRequired(async function route() {
     try {
         const session = await getSession();
-        console.log('Session:', JSON.stringify(session, null, 2));
 
         if (!session || !session.user) {
-            console.log('Session or user is null/undefined');
             return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
         }
 
-        console.log('Session user:', JSON.stringify(session.user, null, 2));
-
-        let auth0Id = session.user.sub;
-        if (!auth0Id && session.user.id) {
-            auth0Id = session.user.id;
-        }
-        console.log('Auth0 ID:', auth0Id);
+        const auth0Id = session.user.sub;
 
         if (!auth0Id) {
-            console.log('Auth0 ID is null/undefined');
-            // If auth0Id is not available, try to use email as a fallback
-            if (session.user.email) {
-                let user = await prisma.user.findUnique({
-                    where: { email: session.user.email },
-                });
-                if (user) {
-                    return NextResponse.json(user);
-                }
-            }
-            // If we still can't identify the user, return an error
             return NextResponse.json({ error: 'Unable to identify user' }, { status: 400 });
         }
 
-        let user = await prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: { auth0Id },
         });
 
         if (!user) {
-            console.log('User not found in database for auth0Id:', auth0Id);
-            // Try to find user by email as a fallback
-            if (session.user.email) {
-                user = await prisma.user.findUnique({
-                    where: { email: session.user.email },
-                });
-                if (user) {
-                    // Update the auth0Id if found by email
-                    user = await prisma.user.update({
-                        where: { id: user.id },
-                        data: { auth0Id },
-                    });
-                    console.log('User found by email and updated:', JSON.stringify(user, null, 2));
-                }
-            }
-            if (!user) {
-                // If still not found, create a new user
-                user = await prisma.user.create({
-                    data: {
-                        auth0Id,
-                        name: session.user.name || '',
-                        email: session.user.email || '',
-                        image: session.user.picture || null,
-                    },
-                });
-                console.log('New user created:', JSON.stringify(user, null, 2));
-            }
-        } else {
-            console.log('User found:', JSON.stringify(user, null, 2));
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
         return NextResponse.json(user);
