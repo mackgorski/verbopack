@@ -83,3 +83,29 @@ model User {
 // as it handles these externally
 
 // TODO: revert migrations and DB change as this broke eveyrthing
+// This is the main entrypoint for your schema definition.
+// Visit https://zenstack.dev/ for more information.
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id            String    @id @default(cuid())
+    auth0Id       String    @unique
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+
+    // ZenStack specific rules
+    @@allow('create,read,update', true)
+    @@allow('delete', auth() != null)
+}
