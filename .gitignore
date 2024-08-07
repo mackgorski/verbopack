@@ -48,3 +48,4 @@ build/
 bindings/
 src/
 prebuilds/
+binding.gyp
