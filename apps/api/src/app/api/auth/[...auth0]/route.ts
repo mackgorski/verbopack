@@ -69,10 +69,11 @@
 // NOTES: THIS WORKS!!!!
 
 
-import { handleAuth, handleLogin, handleCallback, AfterCallback, Session } from '@auth0/nextjs-auth0';
+import { handleAuth, handleLogin, handleCallback, AfterCallback, Session, HandleAuth } from '@auth0/nextjs-auth0';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
 
-const afterCallback: AfterCallback = async (_req, _res, session: Session | null) => {
+const afterCallback: AfterCallback = async (req: NextRequest, res: NextResponse, session: Session | null | undefined) => {
     if (session?.user) {
         const { sub, name, email, picture } = session.user;
         try {
@@ -89,7 +90,7 @@ const afterCallback: AfterCallback = async (_req, _res, session: Session | null)
     return session;
 };
 
-export const GET = handleAuth({
+export const GET: HandleAuth = handleAuth({
     login: handleLogin({
         returnTo: '/profile'
     }),
@@ -98,7 +99,7 @@ export const GET = handleAuth({
     })
 });
 
-export const POST = handleAuth();
+export const POST: HandleAuth = handleAuth();
 
 
 
