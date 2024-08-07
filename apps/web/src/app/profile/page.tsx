@@ -1,7 +1,7 @@
-'use client';
+// 'use client';
 
-import { useUser } from '@repo/auth';
-import { useEffect, useState } from 'react';
+// import { useUser } from '@repo/auth';
+// import { useEffect, useState } from 'react';
 // import Image from 'next/image';
 
 // interface UserProfile {
