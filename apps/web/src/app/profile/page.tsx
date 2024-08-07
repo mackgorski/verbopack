@@ -158,7 +158,11 @@ export default function Profile() {
     useEffect(() => {
         if (user) {
             fetch('http://localhost:3001/api/user', {
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.accessToken}` // Add this line
+                },
             })
                 .then(res => {
                     if (!res.ok) {

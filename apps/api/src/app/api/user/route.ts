@@ -109,7 +109,7 @@ import { NextResponse } from 'next/server';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import prisma from '../../../lib/prisma';
 
-export const GET = withApiAuthRequired(async function route() {
+export const GET = withApiAuthRequired(async function route(req: Request) {
     try {
         const session = await getSession();
 
@@ -131,7 +131,14 @@ export const GET = withApiAuthRequired(async function route() {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        return NextResponse.json(user);
+        // Return only necessary user information
+        return NextResponse.json({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            emailVerified: user.emailVerified,
+        });
     } catch (error) {
         console.error('Error in user route:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
