@@ -199,7 +199,7 @@ export default function Profile() {
                     <p><strong>Email Verified:</strong> {profile.emailVerified ? 'Yes' : 'No'}</p>
                     {profile.image && (
                         <figure className="mt-4">
-                            <Image src={profile.image} alt={profile.name || 'User'} width={100} height={100} className="rounded-full" />
+                            <Image src={profile.image} alt={`Profile picture of ${profile.name || 'user'}`} width={100} height={100} className="rounded-full" />
                         </figure>
                     )}
                 </section>
