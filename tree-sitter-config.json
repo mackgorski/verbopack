@@ -2,7 +2,7 @@
   "parser-directories": [
     "tree-sitter"
   ],
-  "index-file": "index.ts",
+  "index-file": "tree-sitter/index.ts",
   "sample-path": "samples",
   "build-wasm": false
 }
