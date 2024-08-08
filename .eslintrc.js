@@ -45,6 +45,7 @@ module.exports = {
     ],
     ignorePatterns: [
         "bindings/**",
+        "tree-sitter/**",
         "grammar.js",
         "json-grammar.js",
         "typescript-grammar.js",

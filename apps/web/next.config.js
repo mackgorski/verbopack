@@ -21,16 +21,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    async rewrites() {
-        return [
-            {
-                source: '/api/:path*',
-                destination: 'http://localhost:3001/api/:path*',
-            },
-        ];
-    },
+    // async rewrites() {
+    //     return [
+    //         {
+    //             source: '/api/:path*',
+    //             destination: 'http://localhost:3001/api/:path*',
+    //         },
+    //     ];
+    // },
     images: {
-        domains: ['s.gravatar.com', 'cdn.auth0.com', 'dev-fe8jacbga812desp.us.auth0.com'],
+        domains: ['s.gravatar.com'],
     },
 };
 

@@ -13,7 +13,6 @@
     "next": "^14",
     "react": "^18",
     "react-dom": "^18",
-    "@repo/auth": "workspace:*",
     "ui": "workspace:*"
   },
   "devDependencies": {
