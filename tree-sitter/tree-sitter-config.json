@@ -9,5 +9,5 @@
     "jsx": "typescript",
     "json": "json"
   },
-  "grammar-path": "grammar.js"
+  "grammar-path": "./grammar.js"
 }
