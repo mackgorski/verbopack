@@ -13,27 +13,16 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "cypress run",
     "test:e2e:dev": "cypress open",
-    "generate-repo-map": "tree-sitter generate && (find . -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' -o -name '*.json' \\) -print0 | xargs -0 tree-sitter parse || echo 'No files found to parse. Check your current directory and file extensions.') && echo 'Current directory:' && pwd && echo 'Files found:' && find . -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' -o -name '*.json' \\) && rm -f setup.py pyproject.toml Package.swift Makefile Cargo.toml .editorconfig",
     "tree-sitter:init": "tree-sitter init-config",
-    "tree-sitter:generate": "tree-sitter generate tree-sitter/grammar.js",
-    "tree-sitter:parse": "tree-sitter parse \"**/*.{ts,tsx,js,jsx,json}\"",
-    "install": "node-gyp-build",
-    "prebuildify": "prebuildify --napi --strip"
+    "tree-sitter:generate": "tree-sitter generate ./.utils/tree-sitter/grammar.js",
+    "tree-sitter:parse": "(find . -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' -o -name '*.json' \\) -print0 | xargs -0 tree-sitter parse || echo 'No files found to parse. Check your current directory and file extensions.') && echo 'Current directory:' && pwd && echo 'Files found:' && find . -type f \\( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' -o -name '*.json' \\)",
+    "tree-sitter-cleanup": "node ./.utils/tree-sitter/cleanup.js"
   },
   "dependencies": {
     "@nextui-org/react": "^2",
     "react": "^18",
     "react-dom": "^18",
-    "tailwindcss": "^3",
-    "node-gyp-build": "^4.8.0"
-  },
-  "peerDependencies": {
-    "tree-sitter": "^0.21.0"
-  },
-  "peerDependenciesMeta": {
-    "tree_sitter": {
-      "optional": true
-    }
+    "tailwindcss": "^3"
   },
   "devDependencies": {
     "@eslint/js": "^9",
@@ -72,33 +61,16 @@
     "react": "^18",
     "react-dom": "^18",
     "tailwindcss": "^3",
+    "tree-sitter": "^0.21.1",
+    "tree-sitter-typescript": "^0.21.2",
     "tsconfig": "^7",
     "tsup": "^8",
-    "turbo": "^2.0.9",
+    "turbo": "^2.0.12",
     "typescript": "5.3.3",
-    "vitest": "^2.0.4",
-    "tree-sitter-cli": "^0.22.6",
-    "tree-sitter": "^0.21.1",
-    "web-tree-sitter": "^0.20.8",
-    "prebuildify": "^6.0.0"
+    "vitest": "^2.0.4"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
     "node": ">=20"
-  },
-  "types": "bindings/node",
-  "files": [
-    "grammar.js",
-    "binding.gyp",
-    "prebuilds/**",
-    "bindings/node/*",
-    "queries/*",
-    "src/**"
-  ],
-  "tree-sitter": [
-    {
-      "scope": "source.typescript",
-      "injection-regex": "^typescript$"
-    }
-  ]
+  }
 }

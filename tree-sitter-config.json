@@ -1,8 +1,0 @@
-{
-  "parser-directories": [
-    "tree-sitter"
-  ],
-  "index-file": "tree-sitter/index.js",
-  "sample-path": "samples",
-  "build-wasm": false
-}
