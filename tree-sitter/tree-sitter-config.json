@@ -8,5 +8,6 @@
     "js": "typescript",
     "jsx": "typescript",
     "json": "json"
-  }
+  },
+  "grammar-path": "grammar.js"
 }
