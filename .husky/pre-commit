@@ -2,3 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 pnpm lint
+pnpm run tree-sitter:generate
+pnpm run tree-sitter:parse
+pnpm run tree-sitter-cleanup

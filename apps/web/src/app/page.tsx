@@ -1,18 +1,19 @@
-import type { ReactElement } from 'react';
-import { Metadata } from 'next'
+import { Metadata } from 'next';
+// import Link from 'next/link';
 import { Divider } from "@nextui-org/react";
+import ClientComponent from '../components/ClientComponent';
 
 export const metadata: Metadata = {
     title: 'My Next.js App',
-    description: 'Welcome to my Next.js application',
+    description: 'Welcome to my Next.js app!',
 }
 
-export default function Home(): ReactElement {
+export default function Home() {
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <h1 className="text-4xl font-bold">Welcome to My Next.js App</h1>
-            <Divider className="my-4" />
-            <p>This is the main page of your application.</p>
+        <main>
+            <h1>Welcome to My Next.js App</h1>
+            <Divider />
+            <ClientComponent />
         </main>
-    )
+    );
 }

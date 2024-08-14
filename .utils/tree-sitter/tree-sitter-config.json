@@ -1,0 +1,26 @@
+{
+  "parser-directories": [
+    "."
+  ],
+  "directories": [
+    "."
+  ],
+  "file-types": {
+    "ts": "typescript",
+    "tsx": "typescript",
+    "js": "typescript",
+    "jsx": "typescript",
+    "json": "json"
+  },
+  "grammar-path": "grammar.js",
+  "parser": "typescript",
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".turbo",
+    "dist"
+  ],
+  "index-file": "index.js",
+  "sample-path": "samples",
+  "build-wasm": false
+}

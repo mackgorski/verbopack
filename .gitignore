@@ -36,3 +36,7 @@ pnpm-debug.log*
 
 # pnpm
 pnpm-lock.yaml
+
+# aider
+.aider*
+
