@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel ",
+    "build": "cp .env.local apps/web/.env.local && turbo run build",
+    "dev": "turbo run dev --parallel",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:api": "turbo run dev --filter=api",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0 --ignore-pattern 'packages/ui/dist/**'",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky install",

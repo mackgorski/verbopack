@@ -1,37 +1,17 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//     reactStrictMode: true,
-//     experimental: {
-//         appDir: true,
-//     },
-//     // transpilePackages: ["@repo/ui", "@repo/auth"],
-//     async rewrites() {
-//         return [
-//             {
-//                 source: '/api/:path*',
-//                 destination: 'http://localhost:3001/api/:path*',
-//             },
-//         ];
-//     },
-// }
-
-// module.exports = nextConfig
-
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    // async rewrites() {
-    //     return [
-    //         {
-    //             source: '/api/:path*',
-    //             destination: 'http://localhost:3001/api/:path*',
-    //         },
-    //     ];
-    // },
     images: {
         domains: ['s.gravatar.com'],
     },
+    env: {
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+        CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    },
 };
+
+if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+    throw new Error('Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY environment variable');
+}
 
 module.exports = nextConfig;
