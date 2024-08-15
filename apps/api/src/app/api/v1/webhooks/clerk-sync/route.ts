@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
-// Clerk's webhook IPs (updated list)
+// Clerk's webhook IPs
 const ALLOWED_IPS = [
   '44.228.126.217',
   '50.112.21.217',
@@ -170,10 +170,10 @@ export async function POST(req: NextRequest) {
         console.log(`Unhandled event type: ${eventType}`);
     }
 
-    console.log(`Event ${eventType} processed successfully`);
+    console.log(`Clerk webhook event ${eventType} processed successfully`);
     return new NextResponse('', { status: 200 });
   } catch (error) {
-    console.error(`Error processing ${eventType}:`, error);
+    console.error(`Error processing Clerk webhook ${eventType}:`, error);
     return new NextResponse('Error processing webhook', { status: 500 });
   }
 }

@@ -1,5 +1,16 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { clerkMiddleware, ClerkMiddlewareOptions } from '@clerk/nextjs/server';
+
+// Define the webhook route pattern
+const webhookRoutePattern = /^\/api\/v1\/webhooks\/clerk-sync/;
+
+// Define Clerk middleware options
+const clerkMiddlewareOptions = {
+  publicRoutes: [webhookRoutePattern],
+} as ClerkMiddlewareOptions;
+
+export default clerkMiddleware(clerkMiddlewareOptions);
 
 export function middleware(request: NextRequest) {
   // Check if the request is for the API
@@ -28,5 +39,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/api/:path*',
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 };

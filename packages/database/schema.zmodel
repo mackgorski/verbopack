@@ -23,9 +23,9 @@ model User {
   userOrganizations   UserOrganization[]
   externalId          String?
   username            String?
-  publicMetadata      String?
-  privateMetadata     String?
-  unsafeMetadata      String?
+  publicMetadata      Json?
+  privateMetadata     Json?
+  unsafeMetadata      Json?
   sessions            Session[]
 
   @@index([clerkId])
@@ -40,8 +40,8 @@ model Organization {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   userOrganizations UserOrganization[]
-  publicMetadata    String?
-  privateMetadata   String?
+  publicMetadata    Json?
+  privateMetadata   Json?
 
   @@index([clerkId])
 }
