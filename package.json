@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cp .env.local apps/web/.env.local && turbo run build",
+    "build": "cp .env.local apps/web/.env.local && cp .env.local apps/api/.env.local && turbo run build",
     "dev": "turbo run dev --parallel",
     "dev:web": "turbo run dev --filter=web",
     "dev:api": "turbo run dev --filter=api",

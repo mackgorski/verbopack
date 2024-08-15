@@ -5,16 +5,23 @@ import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
-// Clerk's webhook IPs
+// Clerk's webhook IPs (updated list)
 const ALLOWED_IPS = [
-  '3.131.207.170',
-  '3.131.54.54',
-  '3.133.102.100',
-  '3.139.105.4',
-  '18.217.197.172',
-  '52.14.205.9',
-  '52.14.244.48',
-  '52.15.183.144',
+  '44.228.126.217',
+  '50.112.21.217',
+  '52.24.126.164',
+  '54.148.139.208',
+  '2600:1f24:64:8000::/52',
+  '54.164.207.221',
+  '54.90.7.123',
+  '2600:1f28:37:4000::/52',
+  '52.215.16.239',
+  '54.216.8.72',
+  '63.33.109.123',
+  '2a05:d028:17:8000::/52',
+  '13.126.41.108',
+  '15.207.218.84',
+  '65.2.133.31'
 ];
 
 // Define Zod schemas for Clerk event data
@@ -66,11 +73,17 @@ const DeleteEventSchema = z.object({
   id: z.string(),
 });
 
+const SessionEventSchema = z.object({
+  user_id: z.string(),
+  id: z.string(),
+});
+
 export async function POST(req: NextRequest) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
-    throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local');
+    console.error('WEBHOOK_SECRET is not set');
+    return new NextResponse('Server configuration error', { status: 500 });
   }
 
   // Verify IP address
@@ -87,13 +100,20 @@ export async function POST(req: NextRequest) {
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
+    console.error('Missing Svix headers');
     return new NextResponse('Error occurred -- no svix headers', {
       status: 400
     });
   }
 
   // Get the body
-  const payload = await req.json();
+  let payload: unknown;
+  try {
+    payload = await req.json();
+  } catch (error) {
+    console.error('Error parsing request body:', error);
+    return new NextResponse('Error parsing request body', { status: 400 });
+  }
   const body = JSON.stringify(payload);
 
   // Create a new Svix instance with your secret.
@@ -110,7 +130,7 @@ export async function POST(req: NextRequest) {
     }) as WebhookEvent;
   } catch (err) {
     console.error('Error verifying webhook:', err);
-    return new NextResponse('Error occurred', {
+    return new NextResponse('Error verifying webhook', {
       status: 400
     });
   }
@@ -144,7 +164,7 @@ export async function POST(req: NextRequest) {
       case 'session.created':
       case 'session.ended':
       case 'session.removed':
-        await handleSessionEvent(evt.data, eventType);
+        await handleSessionEvent(SessionEventSchema.parse(evt.data), eventType);
         break;
       default:
         console.log(`Unhandled event type: ${eventType}`);
@@ -154,7 +174,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse('', { status: 200 });
   } catch (error) {
     console.error(`Error processing ${eventType}:`, error);
-    return new NextResponse('Error occurred', { status: 500 });
+    return new NextResponse('Error processing webhook', { status: 500 });
   }
 }
 
@@ -250,21 +270,25 @@ async function handleOrganizationMembershipEvent(data: unknown) {
   const parsedData = OrganizationMembershipEventSchema.parse(data);
   const { organization, role, public_user_data } = parsedData;
 
+  const user = await prisma.user.findUnique({ where: { clerkId: public_user_data.user_id } });
+  const org = await prisma.organization.findUnique({ where: { clerkId: organization.id } });
+
+  if (!user || !org) {
+    console.error('User or Organization not found');
+    return;
+  }
+
   const userOrg: Prisma.UserOrganizationUpsertArgs['create'] = {
     role,
-    user: {
-      connect: { clerkId: public_user_data.user_id },
-    },
-    organization: {
-      connect: { clerkId: organization.id },
-    },
+    userId: user.id,
+    organizationId: org.id,
   };
 
   await prisma.userOrganization.upsert({
     where: {
       userId_organizationId: {
-        userId: (await prisma.user.findUnique({ where: { clerkId: public_user_data.user_id } }))!.id,
-        organizationId: (await prisma.organization.findUnique({ where: { clerkId: organization.id } }))!.id,
+        userId: user.id,
+        organizationId: org.id,
       },
     },
     update: userOrg,
@@ -272,43 +296,52 @@ async function handleOrganizationMembershipEvent(data: unknown) {
   });
 }
 
-async function handleOrganizationMembershipDeletion(data: { organization: { id: string }, public_user_data: { user_id: string } }) {
-  const user = await prisma.user.findUnique({ where: { clerkId: data.public_user_data.user_id } });
-  const organization = await prisma.organization.findUnique({ where: { clerkId: data.organization.id } });
+async function handleOrganizationMembershipDeletion(data: unknown) {
+  const parsedData = OrganizationMembershipEventSchema.parse(data);
+  const { organization, public_user_data } = parsedData;
 
-  if (user && organization) {
-    await prisma.userOrganization.delete({
-      where: {
-        userId_organizationId: {
-          userId: user.id,
-          organizationId: organization.id,
-        },
-      },
-    });
+  const user = await prisma.user.findUnique({ where: { clerkId: public_user_data.user_id } });
+  const org = await prisma.organization.findUnique({ where: { clerkId: organization.id } });
+
+  if (!user || !org) {
+    console.error('User or Organization not found');
+    return;
   }
+
+  await prisma.userOrganization.delete({
+    where: {
+      userId_organizationId: {
+        userId: user.id,
+        organizationId: org.id,
+      },
+    },
+  });
 }
 
-async function handleSessionEvent(data: { user_id: string, id: string }, eventType: string) {
+async function handleSessionEvent(data: z.infer<typeof SessionEventSchema>, eventType: string) {
   const user = await prisma.user.findUnique({ where: { clerkId: data.user_id } });
 
-  if (user) {
-    switch (eventType) {
-      case 'session.created':
-        await prisma.session.create({
-          data: {
-            clerkId: data.id,
-            userId: user.id,
-            startedAt: new Date(),
-          },
-        });
-        break;
-      case 'session.ended':
-      case 'session.removed':
-        await prisma.session.update({
-          where: { clerkId: data.id },
-          data: { endedAt: new Date() },
-        });
-        break;
-    }
+  if (!user) {
+    console.error('User not found for session event');
+    return;
+  }
+
+  switch (eventType) {
+    case 'session.created':
+      await prisma.session.create({
+        data: {
+          clerkId: data.id,
+          userId: user.id,
+          startedAt: new Date(),
+        },
+      });
+      break;
+    case 'session.ended':
+    case 'session.removed':
+      await prisma.session.update({
+        where: { clerkId: data.id },
+        data: { endedAt: new Date() },
+      });
+      break;
   }
 }

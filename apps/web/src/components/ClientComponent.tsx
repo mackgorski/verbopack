@@ -6,7 +6,7 @@ export default function ClientComponent() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/hello', {
+        fetch('http://localhost:3001/api/v1/hello', {
             credentials: 'include',
         })
             .then(res => {
