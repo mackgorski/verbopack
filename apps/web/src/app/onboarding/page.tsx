@@ -111,7 +111,7 @@ const OnboardingPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8" role="main">
-      <h1 className="text-3xl font-bold mb-4" tabIndex={0}>Welcome to Our Platform</h1>
+      <h1 className="text-3xl font-bold mb-4">Welcome to Our Platform</h1>
       <div className="mb-8">
         <p aria-live="polite">Step {step + 1} of {steps.length}: {steps[step].title}</p>
       </div>

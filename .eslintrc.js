@@ -6,13 +6,10 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
-        'plugin:@next/next/recommended',
-        'next',
-        'turbo',
-        'prettier',
+        'plugin:@next/next/recommended'
     ],
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y', '@next/next'],
+    plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y'],
     env: {
         node: true,
         es6: true,

@@ -22,17 +22,17 @@ export type ApiOptions = {
     integrations?: { [key: string]: boolean };
     anonymousId?: string;
     originalTimestamp?: string;
-    [key: string]: any;
+    [key: string]: unknown;
 };
 
 export const ApiOptionsSchema = z.object({
     integrations: z.record(z.boolean()).optional(),
     anonymousId: z.string().optional(),
     originalTimestamp: z.string().optional(),
-}).catchall(z.any());
+}).catchall(z.unknown());
 
-export type ApiCallback = (response: any) => void;
+export type ApiCallback = (response: unknown) => void;
 
 export const ApiCallbackSchema = z.function()
-    .args(z.any())
+    .args(z.unknown())
     .returns(z.void());
