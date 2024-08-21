@@ -7,9 +7,12 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
         'plugin:@next/next/recommended',
+        'next',
+        'turbo',
+        'prettier',
     ],
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y'],
+    plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y', '@next/next'],
     env: {
         node: true,
         es6: true,
@@ -20,7 +23,10 @@ module.exports = {
         sourceType: 'module',
         ecmaFeatures: {
             jsx: true
-        }
+        },
+        babelOptions: {
+            presets: [require.resolve('next/babel')],
+        },
     },
     settings: {
         react: {

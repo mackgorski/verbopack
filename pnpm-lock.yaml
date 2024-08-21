@@ -20,6 +20,9 @@ importers:
       tailwindcss:
         specifier: ^3
         version: 3.4.5(ts-node@10.9.2(@types/node@20.11.24)(typescript@5.3.3))
+      zod:
+        specifier: ^3
+        version: 3.23.8
     devDependencies:
       '@eslint/js':
         specifier: ^9
@@ -150,6 +153,9 @@ importers:
       '@prisma/client':
         specifier: ^5.11.0
         version: 5.18.0(prisma@5.18.0)
+      '@repo/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
       next:
         specifier: ^14
         version: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.4.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
@@ -162,9 +168,6 @@ importers:
       svix:
         specifier: ^1.19.1
         version: 1.29.0
-      zod:
-        specifier: ^3.22.4
-        version: 3.23.8
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -193,6 +196,9 @@ importers:
       '@nextui-org/react':
         specifier: ^2
         version: 2.4.2(@types/react@18.2.61)(framer-motion@11.3.2(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(tailwindcss@3.4.5(ts-node@10.9.2(@types/node@20.11.24)(typescript@5.3.3)))
+      '@repo/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
       next:
         specifier: ^14
         version: 14.2.5(@babel/core@7.24.9)(@opentelemetry/api@1.4.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
@@ -250,6 +256,34 @@ importers:
         version: 4.6.0(eslint@9.7.0)
       typescript:
         specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/analytics:
+    dependencies:
+      '@openfeature/web-sdk':
+        specifier: ^1
+        version: 1.2.1(@openfeature/core@1.3.0)
+      '@rudderstack/analytics-js':
+        specifier: ^3
+        version: 3.7.9
+    devDependencies:
+      '@types/node':
+        specifier: ^20.5.2
+        version: 20.14.12
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.2.61
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.2.19
+      eslint:
+        specifier: ^8.53.0
+        version: 8.57.0
+      react:
+        specifier: ^18
+        version: 18.2.0
+      typescript:
+        specifier: ^5.2.2
         version: 5.3.3
 
   packages/database:
@@ -1499,6 +1533,14 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
+  '@openfeature/core@1.3.0':
+    resolution: {integrity: sha512-Z2TiqfC4zoiCB/JMzIrzRrdDYdfOCGjI2MDgNHDEwA/k3y5IZANFkNAc/nhfof/QrmOy0HjQtvjRLnEW8urqJQ==}
+
+  '@openfeature/web-sdk@1.2.1':
+    resolution: {integrity: sha512-4Yz6zQA8/zwFUjKhvgyhIscywkLuDLOpzy//+GdMpSgvC1VsyifFf0p0ISMMLXlQmYZxVLamhL6jAnVge8VyEw==}
+    peerDependencies:
+      '@openfeature/core': 1.3.0
+
   '@opentelemetry/api@1.4.1':
     resolution: {integrity: sha512-O2yRJce1GOc6PAy3QxFM4NzFiWzvScDC1/5ihYBL6BUEVdq0XMWN01sppE+H6bBXbaFYipjwFLEWLg5PaSOThA==}
     engines: {node: '>=8.0.0'}
@@ -2061,6 +2103,9 @@ packages:
     resolution: {integrity: sha512-yjk2MAkQmoaPYCSu35RLJ62+dz358nE83VfTePJRp8CG7aMg25mEJYpXFiD+NcevhX8LxD5OP5tktPXnXN7GDw==}
     cpu: [x64]
     os: [win32]
+
+  '@rudderstack/analytics-js@3.7.9':
+    resolution: {integrity: sha512-QlDEqrJ7jyaV5tXYnbwaI0Oh1GKmgDhgKwXGVS4RbW5N/w2aE5/FcgaTHU7YBfoPdU5jHMA4D/hrrCSWjThbIw==}
 
   '@rushstack/eslint-patch@1.5.1':
     resolution: {integrity: sha512-6i/8UoL0P5y4leBIGzvkZdS85RDMG9y1ihZzmTZQ5LdHUYmZ7pKFoj8X0236s3lusPs1Fa5HTQUpwI+UfTcmeA==}
@@ -8621,6 +8666,12 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
+  '@openfeature/core@1.3.0': {}
+
+  '@openfeature/web-sdk@1.2.1(@openfeature/core@1.3.0)':
+    dependencies:
+      '@openfeature/core': 1.3.0
+
   '@opentelemetry/api@1.4.1': {}
 
   '@paralleldrive/cuid2@2.2.2':
@@ -9546,6 +9597,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.18.1':
     optional: true
+
+  '@rudderstack/analytics-js@3.7.9': {}
 
   '@rushstack/eslint-patch@1.5.1': {}
 
