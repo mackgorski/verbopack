@@ -55,3 +55,12 @@
 
 ## Tasks
 - [] Chekc if tolls like `tsc` are needed and can thos ebe replaced with regular next tools.
+
+
+# Clerk next steps
+Next steps:
+
+Implement proper error handling and logging in the API app.
+Set up a database connection in the API app to store user data received from Clerk webhooks.
+Implement the necessary logic to keep your database in sync with Clerk user data.
+Add more sophisticated authentication checks and user management features in your web app using Clerk's components and hooks.
