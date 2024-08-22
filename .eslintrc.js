@@ -5,8 +5,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
-        'plugin:jsx-a11y/recommended',
-        'plugin:@next/next/recommended',
+        'plugin:jsx-a11y/recommended'
     ],
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y'],
@@ -20,7 +19,10 @@ module.exports = {
         sourceType: 'module',
         ecmaFeatures: {
             jsx: true
-        }
+        },
+        babelOptions: {
+            presets: [require.resolve('next/babel')],
+        },
     },
     settings: {
         react: {

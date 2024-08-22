@@ -1,7 +1,9 @@
-export default function Dashboard() {
+import DashboardContent from './DashboardContent';
+
+export default function Page() {
     return (
-        <div>
-            <h1>Dashboard</h1>
-        </div>
+        <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+            <DashboardContent />
+        </main>
     );
 }
